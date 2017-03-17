@@ -1,0 +1,212 @@
+﻿
+<nav class="navbar navbar-findcond navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">University of Caloocan Wall</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right">
+                <!--<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i> Notification <span class="badge">0</span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#"><i class="fa fa-fw fa-tag"></i> <span class="badge">Notification</span> sayfası <span class="badge">Video</span> sayfasında etiketlendi</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-thumbs-o-up"></i> <span class="badge">Music</span> sayfasında iletiniz beğenildi</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-thumbs-o-up"></i> <span class="badge">Video</span> sayfasında iletiniz beğenildi</a></li>
+                        <li><a href="#"><i class="fa fa-fw fa-thumbs-o-up"></i> <span class="badge">Game</span> sayfasında iletiniz beğenildi</a></li>
+                    </ul>
+                </li>
+                <li class="active"><a href="#">Messages <span class="sr-only">(current)</span></a></li>-->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{accountStatus}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li data-toggle="modal" data-target="#modal-login" *ngIf="accountStatus == 'Account'"><a>Login</a></li>
+                        <li data-toggle="modal" data-target="#modal-signup" *ngIf="accountStatus == 'Account'"><a>Create Account</a></li>
+                        
+                        <li *ngIf="accountStatus != 'Account'" data-toggle="modal" data-target="#modal-addpost"><a>Add Post</a></li>
+                        <li *ngIf="accountStatus != 'Account'"><a (click)="Logout()">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right search-form" role="search">
+                <input type="text" (keyup.enter)="SearchChanges(searchData.value)" #searchData class="form-control" title="This feature is under construction. Thanks" placeholder="Search" disabled />
+            </form>
+        </div>
+    </div>
+</nav>
+
+<br/>
+<!--Content-->
+
+<div class="container">
+    <div class="row" *ngFor="let post of posts">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default panel--styled" style="border-radius:0px;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 panelTop">
+                            <div class="row" *ngIf="accountID == post.UserID">
+                                 <div class="col-md-12">
+                                     <a class="pull-right" style="z-index:10" (click)="DeletePost(post.ID)" title="Delete"><i style="color:darkgrey;" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+
+
+                                 </div>
+                                
+                            </div>
+                           <div class="col-md-12">
+                                <h4>{{post.UserName}}</h4>
+                                <h5><span class="glyphicon glyphicon-time" style="color:burlywood"></span> {{ParseDate(post.DateCreated)}}</h5>
+                                <hr/>
+                                <p>{{post.Content}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 panelBottom">
+                            <hr/>
+
+
+                            <span *ngIf="accountID != null" class="glyphicon glyphicon-comment" style="color:darkgray; margin-right:5px;"> Comment</span>
+                            <span *ngIf="accountID == null" class="glyphicon glyphicon-comment"  data-toggle="modal" data-target="#modal-login" style="color:darkgray; margin-right:5px;"> Comment</span>
+                            <div style="margin-left:20px;" *ngFor="let comment of post.Comments">
+                                <div class="row">
+                                    <div class="col-md-12 panelTop">
+
+                                        <div class="col-md-12">
+                                            <h5>{{comment.UserName}}</h5>
+                                            <h6><small class="glyphicon glyphicon-time" style="color:burlywood"></small> {{ParseDate(comment.DateCreated)}}</h6>
+                                            
+                                            <p>{{comment.Content}}</p>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                        
+
+                         
+                            <div class="col-md-12" *ngIf="accountStatus != 'Account'">
+                             
+                                <!--<form (keyup.enter)="AddNewComment(commentData)" #commentData="ngForm">-->
+                                  
+                                    <input title="Press enter" type="text" class="form-control" style="margin-top:20px; width:100%;" (keyup.enter)="AddNewComment(commentContent.value, post.ID)" placeholder="Comment" required=""  #commentContent />
+                                   
+                                    <hr />
+
+                                <!--</form>-->
+                            </div>
+                           
+                           
+                        </div>
+
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--End Content-->
+<!--Modals-->
+
+<!-- Modal login -->
+<div class="modal modal-fullscreen" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Account</h4>
+            </div>
+            <div class="modal-body">
+                <div class="wrapper">
+                    <form (ngSubmit)="Login(loginData)" #loginData="ngForm" class="form-signin">
+                        <h2 class="form-signin-heading">Please login</h2>
+                        <input type="text" class="form-control" ngModel name="Email" placeholder="Email Address" required="" autofocus="" />
+                        <br />
+                        <input type="password" class="form-control" ngModel name="Password" placeholder="Password" required="" />
+                        <hr>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                        <hr/>
+                        <p *ngIf="loginMessage != null">{{loginMessage}}</p>
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Modal Login-->
+<!--Modal Signup-->
+<div class="modal modal-fullscreen" id="modal-signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Account</h4>
+            </div>
+            <div class="modal-body">
+             
+                <form (ngSubmit)="SignUp(signupData)" #signupData="ngForm" class="form-signin">
+                    <h2 class="form-signin-heading">Create Account</h2>
+                    <input type="text" class="form-control" ngModel name="Email" placeholder="Email Address" required="" autofocus="" />
+                    <br />
+                    <input type="text" class="form-control" ngModel name="FirstName" placeholder="First Name" required="" autofocus="" />
+                    <br />
+                    <input type="text" class="form-control" ngModel name="LastName" placeholder="Last Name" required="" autofocus="" />
+                    <br />
+                    <input type="password" class="form-control" ngModel name="Password" placeholder="Password" required="" />
+                    <hr>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                    <hr />
+                    <p *ngIf="signUpMessage != null">{{signUpMessage}}</p>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal modal-fullscreen" id="modal-addpost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Post</h4>
+            </div>
+            <div class="modal-body">
+                <div class="wrapper">
+                    <form (ngSubmit)="AddNewPost(newPostData)" #newPostData="ngForm" class="form-signin">
+                        <h2 class="form-signin-heading">What's on your mind ?</h2>
+                        <br>
+                        <textarea type="text" class="form-control" ngModel name="Content" placeholder="What's on your mind?" required=""></textarea>
+                        <br />
+                      
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Post</button>
+                        <hr />
+                       
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

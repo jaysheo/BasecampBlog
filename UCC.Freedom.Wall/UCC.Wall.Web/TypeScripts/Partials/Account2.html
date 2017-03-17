@@ -1,0 +1,27 @@
+﻿
+
+<style>
+  
+body {
+	background: #eee !important;	
+}
+
+
+</style>
+<div class="wrapper">
+    <form (ngSubmit)="Login(loginData)" #loginData="ngForm" class="form-signin">
+        <h2 class="form-signin-heading">Please login</h2>
+        <input type="text" class="form-control" ngModel name="Email" placeholder="Email Address" required="" autofocus="" />
+       <br/>
+         <input type="password" class="form-control" ngModel name="Password" placeholder="Password" required="" />
+        <hr>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+        <p *ngIf="loginMessage != null">{{loginMessage}}</p>
+    </form>
+</div>
+
+
+<div class="wrapper">
+   
+</div>

@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{5C9DB862-B766-4F02-8473-D3310FFD01CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{E08BA06A-E372-45A7-8F35-816DE9ABFF55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCC.Wall", "UCC.Wall\UCC.Wall.csproj", "{88FCDEC5-6E53-47D4-BC80-6D9C32F9D741}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UCC.Wall.Web", "UCC.Wall.Web\UCC.Wall.Web.csproj", "{1860451F-107D-4CD1-B5DE-F7F24A12BD94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88FCDEC5-6E53-47D4-BC80-6D9C32F9D741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88FCDEC5-6E53-47D4-BC80-6D9C32F9D741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88FCDEC5-6E53-47D4-BC80-6D9C32F9D741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88FCDEC5-6E53-47D4-BC80-6D9C32F9D741}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1860451F-107D-4CD1-B5DE-F7F24A12BD94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1860451F-107D-4CD1-B5DE-F7F24A12BD94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1860451F-107D-4CD1-B5DE-F7F24A12BD94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1860451F-107D-4CD1-B5DE-F7F24A12BD94}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{88FCDEC5-6E53-47D4-BC80-6D9C32F9D741} = {E08BA06A-E372-45A7-8F35-816DE9ABFF55}
+		{1860451F-107D-4CD1-B5DE-F7F24A12BD94} = {5C9DB862-B766-4F02-8473-D3310FFD01CC}
+	EndGlobalSection
+EndGlobal

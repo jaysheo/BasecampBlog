@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="WallEntities-Web.config Connection String" description="WallEntities Connection String used in web.config by the application to access the database." defaultValue="Data Source=SQL5017.myASP.NET;Initial Catalog=DB_A19F23_uccwallbasecampp;User Id=DB_A19F23_uccwallbasecampp_admin;Password=jayjay123;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\jaymo\\Documents\\Visual\ Studio\ 2015\\Projects\\UCC\.Freedom\.Wall\\UCC\.Wall\.Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WallEntities']/@connectionString" />
+  </parameter>
+</parameters>

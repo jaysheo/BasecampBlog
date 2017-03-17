@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="universityofcaloocan" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\jaymo\\Documents\\Visual\ Studio\ 2015\\Projects\\UCC\.Freedom\.Wall\\UCC\.Wall\.Web\\obj\\Debug\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\jaymo\\Documents\\Visual\ Studio\ 2015\\Projects\\UCC\.Freedom\.Wall\\UCC\.Wall\.Web\\obj\\Debug\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="WallEntities-Web.config Connection String" description="" value="Data Source=SQL5018.myASP.NET;User ID=DB_A19F23_uccwall_admin;Password=YOUR_DB_PASSWORD" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\jaymo\\Documents\\Visual\ Studio\ 2015\\Projects\\UCC\.Freedom\.Wall\\UCC\.Wall\.Web\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='WallEntities']/@connectionString" />
+  </parameter>
+</parameters>
