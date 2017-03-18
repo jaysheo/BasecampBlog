@@ -126,12 +126,13 @@ export class AccountComponent {
 
     }
 
-    AddNewComment(commentContent:string, postID:string) {
+    AddNewComment(commentContent:string, postID:string, event:any) {
         let comment = new CommentModel(commentContent, postID);
         console.log(comment);
         this.commentService.AddComment(comment).subscribe(data => {
 
-
+            console.log(event.value);
+            
             for (var i in this.posts) {
                 if (this.posts[i].ID == data.PostID) {
                     this.posts[i].Comments.push(data);

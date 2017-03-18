@@ -82,11 +82,12 @@ var AccountComponent = (function () {
             });
         }
     };
-    AccountComponent.prototype.AddNewComment = function (commentContent, postID) {
+    AccountComponent.prototype.AddNewComment = function (commentContent, postID, event) {
         var _this = this;
         var comment = new Comment_2.CommentModel(commentContent, postID);
         console.log(comment);
         this.commentService.AddComment(comment).subscribe(function (data) {
+            console.log(event.value);
             for (var i in _this.posts) {
                 if (_this.posts[i].ID == data.PostID) {
                     _this.posts[i].Comments.push(data);

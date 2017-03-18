@@ -17,7 +17,7 @@ namespace UCC.Wall.Services
 
         public Models.Entities.Post Create(Models.Entities.Post entity)
         {
-                        context.Posts.Add(entity);
+            context.Posts.Add(entity);
             context.SaveChanges();
             return entity;
 
