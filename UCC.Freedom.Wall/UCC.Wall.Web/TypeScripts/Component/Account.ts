@@ -18,7 +18,10 @@ declare var $: any;
 })
 export class AccountComponent {
 
+    public listPosts: any[];
     public posts: any[];
+    public listComments: any[];
+    public comment: any[];
 
     constructor(
         private accountService: AccountService,
@@ -30,6 +33,7 @@ export class AccountComponent {
     private signUpMessage: string;
     private accountStatus: string = 'Account';
     private accountID: string;
+    private postError: string;
 
     ngOnInit(): any {
 
@@ -43,10 +47,8 @@ export class AccountComponent {
     AddNewPost(form: NgForm) {
         
         this.postService.AddPost(form.value).subscribe(data => {
-            console.log('success');
             form.reset();
-           
-            this.RetrievePost();
+            this.posts.unshift(data);
             this.Modal("modal-addpost", false)
         }, error => { console.log(error) });
        
@@ -56,10 +58,24 @@ export class AccountComponent {
        
        this.postService.Retrieve().subscribe(data => {
           
-            this.posts = data.Posts;
-            console.log(data);
+          let postHandle:any[] = data.Posts;
+          this.listComments = data.Comments;
+           
+
+           for (var i = 0; i < postHandle.length; i++){
+               let getComments = this.listComments.filter(x => x.PostID == postHandle[i].ID);
+               postHandle[i].Comments = getComments;
+          }
+           this.posts = postHandle;
+           console.log("RAW DATA")
+           console.log(data);
+           console.log("Post Arranged");
+           console.log(this.posts);
+
         }, error => console.log(error));
     }
+
+   
 
     Login(form: NgForm) {
 
@@ -114,9 +130,18 @@ export class AccountComponent {
         let comment = new CommentModel(commentContent, postID);
         console.log(comment);
         this.commentService.AddComment(comment).subscribe(data => {
-          
-            this.RetrievePost();
-        }, error => { console.log(error) });
+
+
+            for (var i in this.posts) {
+                if (this.posts[i].ID == data.PostID) {
+                    this.posts[i].Comments.push(data);
+                    break;
+                }
+
+            }
+
+            console.log(data);
+        }, error => { console.log(error); this.postError ="Posting Failed. Please try Again." });
 
     }
 

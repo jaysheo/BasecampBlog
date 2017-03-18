@@ -30,17 +30,25 @@ var AccountComponent = (function () {
     AccountComponent.prototype.AddNewPost = function (form) {
         var _this = this;
         this.postService.AddPost(form.value).subscribe(function (data) {
-            console.log('success');
             form.reset();
-            _this.RetrievePost();
+            _this.posts.unshift(data);
             _this.Modal("modal-addpost", false);
         }, function (error) { console.log(error); });
     };
     AccountComponent.prototype.RetrievePost = function () {
         var _this = this;
         this.postService.Retrieve().subscribe(function (data) {
-            _this.posts = data.Posts;
+            var postHandle = data.Posts;
+            _this.listComments = data.Comments;
+            for (var i = 0; i < postHandle.length; i++) {
+                var getComments = _this.listComments.filter(function (x) { return x.PostID == postHandle[i].ID; });
+                postHandle[i].Comments = getComments;
+            }
+            _this.posts = postHandle;
+            console.log("RAW DATA");
             console.log(data);
+            console.log("Post Arranged");
+            console.log(_this.posts);
         }, function (error) { return console.log(error); });
     };
     AccountComponent.prototype.Login = function (form) {
@@ -79,8 +87,14 @@ var AccountComponent = (function () {
         var comment = new Comment_2.CommentModel(commentContent, postID);
         console.log(comment);
         this.commentService.AddComment(comment).subscribe(function (data) {
-            _this.RetrievePost();
-        }, function (error) { console.log(error); });
+            for (var i in _this.posts) {
+                if (_this.posts[i].ID == data.PostID) {
+                    _this.posts[i].Comments.push(data);
+                    break;
+                }
+            }
+            console.log(data);
+        }, function (error) { console.log(error); _this.postError = "Posting Failed. Please try Again."; });
     };
     AccountComponent.prototype.CheckLoggedIn = function () {
         var _this = this;

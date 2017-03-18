@@ -13,7 +13,7 @@ export class CommentService {
     }
 
     
-    public AddComment(post: CommentModel): Observable<boolean> {
+    public AddComment(post: CommentModel):any {
         return this.http.post("Comment/Create", JSON.stringify(post), { headers: this.headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
@@ -26,25 +26,7 @@ export class CommentService {
     }
 
 
-    //public Get(skip: number, take: number): Observable<boolean> {
-
-    //    return this.http.get(ApiUrlResource.GetItems + '?skip=' + skip + '&take=' + take, { headers: GlobalApiUrlResource.Headers })
-    //        .map((res: Response) => res.json());
-    //}
-
-    //public Delete(shoppingCartID: number) {
-
-    //    return this.http.get(ApiUrlResource.Delete + '?shoppingCartId=' + shoppingCartID, { headers: GlobalApiUrlResource.Headers })
-    //        .map((res: Response) => res.json());
-    //}
-
-
-    //public GetListSKU(sku: string): Observable<boolean> {
-    //    return this.http.get('/ShoppingCart/Get' + '?' + sku, { headers: GlobalApiUrlResource.Headers })
-    //        .map((res: Response) => res.json());
-
-    //}
-
+   
 
 
 }
