@@ -143,6 +143,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\bundle.js" />
     <Content Include="Content\Images\icon-wall.jpg" />
     <Content Include="Content\library\ckeditor\adapters\jquery.js" />
     <Content Include="Content\library\ckeditor\build-config.js" />

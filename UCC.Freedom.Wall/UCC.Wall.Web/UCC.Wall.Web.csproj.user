@@ -9,7 +9,7 @@
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
-    <ProjectView>ProjectFiles</ProjectView>
+    <ProjectView>ShowAllFiles</ProjectView>
     <NameOfLastUsedPublishProfile>Default Settings %284%29</NameOfLastUsedPublishProfile>
     <IISExpressSSLPort>44346</IISExpressSSLPort>
   </PropertyGroup>

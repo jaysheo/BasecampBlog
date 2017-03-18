@@ -32,6 +32,12 @@
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.0",
     "gulp-typescript": "^2.13.6",
-    "gulp-tsc": "^1.2.0"
+    "gulp-tsc": "^1.2.0",
+
+    "gulp-uglify": "^2.0.1",
+    "tsify": "^3.0.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "browserify": "^14.1.0"
   }
 }

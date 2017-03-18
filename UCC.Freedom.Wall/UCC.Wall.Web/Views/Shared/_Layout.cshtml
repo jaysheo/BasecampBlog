@@ -20,9 +20,15 @@
     <!-- 2. Configure SystemJS -->
    
     <script src="~/App/systemjs.config.js"></script>
-    <script>
+    @*<script>
         System.import('../App/main').catch(function (err)
         {
+            console.error(err);
+        });
+    </script>*@
+    <script>
+        System.config({ meta: { '../App/bundle.js': { format: 'global' } } })
+        System.import('../App/bundle').catch(function (err) {
             console.error(err);
         });
     </script>
