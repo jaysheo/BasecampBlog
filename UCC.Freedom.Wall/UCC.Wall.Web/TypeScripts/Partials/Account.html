@@ -1,4 +1,12 @@
-﻿
+﻿<style>
+    
+.blogContent img{
+    width:100%;
+    height:auto;
+}
+</style>
+
+
 <nav class="navbar navbar-findcond navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -62,7 +70,13 @@
                                 <h4>{{post.UserName}}</h4>
                                 <h6><small class="glyphicon glyphicon-time" style="color:darkgray;"></small> {{ParseDate(post.DateCreated)}}</h6>
                                 <hr/>
-                                <p>{{post.Content}}</p>
+                              
+                                   <div class="blogContent" [innerHTML]="ParseDOM(post.Content)"></div>
+
+                             
+                               
+
+                               
                             </div>
                         </div>
                     </div>
@@ -71,7 +85,7 @@
                             <hr/>
 
 
-                            <span *ngIf="accountID != null" class="glyphicon glyphicon-comment" style="color:darkgray; margin-right:5px;"> Comments ({{post.Comments?.length}})</span>
+                            <span *ngIf="accountID != null" class="glyphicon glyphicon-comment" style="color:darkgray; margin-right:5px;"> Comments <span *ngIf="post.Comments?.length != 0">({{post.Comments?.length}})</span></span>
                             <span *ngIf="accountID == null" class="glyphicon glyphicon-comment"  data-toggle="modal" data-target="#modal-login" style="color:darkgray; margin-right:5px;"> Comment</span>
                             <div style="margin-left:20px;" *ngFor="let comment of post.Comments">
                                 <div class="row">
@@ -94,7 +108,7 @@
                              
                                 <!--<form (keyup.enter)="AddNewComment(commentData)" #commentData="ngForm">-->
                                   
-                                    <input title="Press enter" type="text" class="form-control" style="margin-top:20px; width:100%;" (keyup.enter)="AddNewComment(commentContent.value, post.ID, $event)" placeholder="Comment" required=""  #commentContent />
+                                    <input id="commentInput" title="Press enter" type="text" class="form-control" style="margin-top:20px; width:100%;" (keyup.enter)="AddNewComment(commentContent.value, post.ID, $event)" placeholder="Comment" required=""  #commentContent />
                                    
                                     <hr />
 
@@ -190,16 +204,16 @@
             </div>
             <div class="modal-body">
                 <div class="wrapper">
-                    <form (ngSubmit)="AddNewPost(newPostData)" #newPostData="ngForm" class="form-signin">
+                    <!--<form #newPostData="ngForm" novalidate>-->
                         <h2 class="form-signin-heading">What's on your mind ?</h2>
                         <br>
-                        <textarea type="text" class="form-control" ngModel name="Content" placeholder="What's on your mind?" required=""></textarea>
+                        <input type="text" class="form-control" placeholder="What's on your mind?" required="" id="postdata" />
                         <br />
                       
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Post</button>
+                        <button class="btn btn-lg btn-primary btn-block" (click)="AddNewPost()">Post</button>
                         <hr />
                        
-                    </form>
+                    <!--</form>-->
                 </div>
 
 

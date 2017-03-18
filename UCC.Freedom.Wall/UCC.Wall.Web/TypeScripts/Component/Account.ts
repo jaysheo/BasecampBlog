@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 declare var $: any;
+declare var CKEDITOR: any;
 
 
 @Component({
@@ -38,16 +39,42 @@ export class AccountComponent {
     ngOnInit(): any {
 
       
+        this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
       
     }
 
+    InitCKEDITOR() {
+        CKEDITOR.replace('postdata', {
+            plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles,video',
+            on: {
+                instanceReady: function () {
+                    this.dataProcessor.htmlFilter.addRules({
+                        elements: {
+                            img: function (el) {
+                                if (!el.attributes.class)
+                                    el.attributes.class = 'blogimage';
+                            }
+                        }
+                    });
 
-    AddNewPost(form: NgForm) {
+                  
+
+
+                }
+            }
+        });
+    }    
+
+
+    AddNewPost() {
+        let form:any = CKEDITOR.instances['postdata'].getData();
+        console.log(form);
         
-        this.postService.AddPost(form.value).subscribe(data => {
-            form.reset();
+        this.postService.AddPost(form).subscribe(data => {
+         //   form.reset();
+            CKEDITOR.instances['postdata'].setData('');
             this.posts.unshift(data);
             this.Modal("modal-addpost", false)
         }, error => { console.log(error) });
@@ -67,10 +94,10 @@ export class AccountComponent {
                postHandle[i].Comments = getComments;
           }
            this.posts = postHandle;
-           console.log("RAW DATA")
-           console.log(data);
-           console.log("Post Arranged");
-           console.log(this.posts);
+           //console.log("RAW DATA")
+           //console.log(data);
+           //console.log("Post Arranged");
+           //console.log(this.posts);
 
         }, error => console.log(error));
     }
@@ -85,7 +112,7 @@ export class AccountComponent {
             this.accountStatus = data.FirstName + " " + data.LastName;
             this.accountID = data.ID;
             this.Modal("modal-login", false);
-            console.log("accountID: " + this.accountID);
+            //console.log("accountID: " + this.accountID);
 
         }, error => {
             this.loginMessage = "Email or Password is Invalid. Please try again.";
@@ -128,22 +155,39 @@ export class AccountComponent {
 
     AddNewComment(commentContent:string, postID:string, event:any) {
         let comment = new CommentModel(commentContent, postID);
-        console.log(comment);
-        this.commentService.AddComment(comment).subscribe(data => {
 
-            console.log(event.value);
-            
-            for (var i in this.posts) {
-                if (this.posts[i].ID == data.PostID) {
-                    this.posts[i].Comments.push(data);
-                    break;
+        if (commentContent != ""){
+            this.commentService.AddComment(comment).subscribe(data => {
+
+          
+                $("input#commentInput").each(function () {
+                    $(this).val('');
+                })
+                      
+
+
+                for (var i in this.posts) {
+                    if (this.posts[i].ID == data.PostID) {
+                        this.posts[i].Comments.push(data);
+                        break;
+                    }
+
                 }
 
-            }
 
-            console.log(data);
-        }, error => { console.log(error); this.postError ="Posting Failed. Please try Again." });
+            }, error => { console.log(error); this.postError = "Posting Failed. Please try Again." });
+        }
+      
 
+    }
+
+    ClearComment(e) {
+     
+            var enterKey = 13;
+            if (e.which == enterKey) {
+                $(this).val('');
+          
+        }
     }
 
     CheckLoggedIn() {
@@ -153,14 +197,14 @@ export class AccountComponent {
                 console.log(data);
                 this.accountStatus = data.UserName;
                 this.accountID = data.ID
-                console.log("accountID: " + this.accountID);
+                ////console.log("accountID: " + this.accountID);
             } else {
                 this.accountID = null;
             }
 
          
             this.RetrievePost();
-            console.log("accountID: " + this.accountID);
+            //console.log("accountID: " + this.accountID);
         });
        
     }
@@ -218,6 +262,13 @@ export class AccountComponent {
     }
 
 
+    ParseDOM(value:any): any {
+        
+        let sd = value;
+        $('.blogContent img').addClass('image-responsive');
+        return sd;
+
+    }
   
 
     Modal(modalName: string, toggle: boolean) {

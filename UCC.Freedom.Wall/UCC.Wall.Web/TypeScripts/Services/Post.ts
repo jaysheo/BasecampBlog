@@ -18,8 +18,9 @@ export class PostService {
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 
-    public AddPost(post:any): Observable<boolean> {
-        return this.http.post("Post/Create", JSON.stringify(post), { headers: this.headers })
+    public AddPost(post: any): Observable<boolean> {
+        console.log(post);
+        return this.http.post("Post/Create", JSON.stringify({ Content: post}), { headers: this.headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 

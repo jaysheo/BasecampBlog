@@ -21,7 +21,8 @@ var PostService = (function () {
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };
     PostService.prototype.AddPost = function (post) {
-        return this.http.post("Post/Create", JSON.stringify(post), { headers: this.headers })
+        console.log(post);
+        return this.http.post("Post/Create", JSON.stringify({ Content: post }), { headers: this.headers })
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };
     PostService.prototype.SearchPost = function (post) {
