@@ -69,15 +69,18 @@ export class AccountComponent {
 
 
     AddNewPost() {
-        let form:any = CKEDITOR.instances['postdata'].getData();
+        let form: any = CKEDITOR.instances['postdata'].getData();
         console.log(form);
-        
-        this.postService.AddPost(form).subscribe(data => {
-         //   form.reset();
-            CKEDITOR.instances['postdata'].setData('');
-            this.posts.unshift(data);
-            this.Modal("modal-addpost", false)
-        }, error => { console.log(error) });
+        if (form != "") {
+            this.postService.AddPost(form).subscribe(data => {
+
+                CKEDITOR.instances['postdata'].setData('');
+                this.posts.unshift(data);
+                this.Modal("modal-addpost", false)
+            }, error => { console.log(error) });
+
+        }
+       
        
     }
 

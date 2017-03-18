@@ -1,7 +1,12 @@
-﻿var ts = require('gulp-typescript');
+﻿/// <binding AfterBuild='bundle' />
+var ts = require('gulp-typescript');
 var gulp = require('gulp');
 var clean = require('gulp-clean');
-
+var browserify = require("browserify");
+var source = require("vinyl-source-stream");
+var tsify = require("tsify");
+var buffer = require("vinyl-buffer");
+var uglify = require("gulp-uglify");
 var destPath = './libs/';
 
 // Delete the dist directory
@@ -36,6 +41,25 @@ gulp.task('ts', function (done) {
     ])
         .pipe(ts(tsProject), undefined, ts.reporter.fullReporter());
     return tsResult.js.pipe(gulp.dest('./App'));
+});
+
+
+gulp.task("bundle", function (done) {
+    return browserify("./TypeScripts/main.ts")
+        .plugin("tsify", {
+            emitDecoratorMetadata: true,
+            experimentalDecorators: true,
+            module: "commonjs",
+            noEmitOnError: true,
+            noImplicitAny: false,
+            target: "es5",
+            moduleResolution: "node"
+        })
+        .bundle()
+        .pipe(source("bundle.js"))
+        .pipe(buffer())
+        .pipe(uglify())
+        .pipe(gulp.dest("./App"));
 });
 
 gulp.task('watch', ['watch.ts']);

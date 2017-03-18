@@ -7,3 +7,12 @@ C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\b
 C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\bin\Release\EntityFramework.SqlServer.xml
 C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\obj\Release\UCC.Wall.dll
 C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\obj\Release\UCC.Wall.pdb
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\UCC.Wall.dll.config
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\UCC.Wall.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\UCC.Wall.pdb
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\EntityFramework.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\EntityFramework.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Release\UCC.Wall.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Release\UCC.Wall.pdb

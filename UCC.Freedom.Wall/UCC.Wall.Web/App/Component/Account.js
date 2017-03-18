@@ -49,12 +49,13 @@ var AccountComponent = (function () {
         var _this = this;
         var form = CKEDITOR.instances['postdata'].getData();
         console.log(form);
-        this.postService.AddPost(form).subscribe(function (data) {
-            //   form.reset();
-            CKEDITOR.instances['postdata'].setData('');
-            _this.posts.unshift(data);
-            _this.Modal("modal-addpost", false);
-        }, function (error) { console.log(error); });
+        if (form != "") {
+            this.postService.AddPost(form).subscribe(function (data) {
+                CKEDITOR.instances['postdata'].setData('');
+                _this.posts.unshift(data);
+                _this.Modal("modal-addpost", false);
+            }, function (error) { console.log(error); });
+        }
     };
     AccountComponent.prototype.RetrievePost = function () {
         var _this = this;

@@ -17,8 +17,6 @@ var CommentService = (function () {
         this.headers = new http_1.Headers({ "Content-Type": "application/json" });
     }
     CommentService.prototype.AddComment = function (post) {
-        console.log("comment");
-        console.log(post);
         return this.http.post("Comment/Create", JSON.stringify(post), { headers: this.headers })
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };

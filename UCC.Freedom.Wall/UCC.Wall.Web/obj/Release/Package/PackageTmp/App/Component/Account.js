@@ -24,23 +24,52 @@ var AccountComponent = (function () {
         this.accountStatus = 'Account';
     }
     AccountComponent.prototype.ngOnInit = function () {
+        this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
     };
-    AccountComponent.prototype.AddNewPost = function (form) {
+    AccountComponent.prototype.InitCKEDITOR = function () {
+        CKEDITOR.replace('postdata', {
+            plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles,video',
+            on: {
+                instanceReady: function () {
+                    this.dataProcessor.htmlFilter.addRules({
+                        elements: {
+                            img: function (el) {
+                                if (!el.attributes.class)
+                                    el.attributes.class = 'blogimage';
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    };
+    AccountComponent.prototype.AddNewPost = function () {
         var _this = this;
-        this.postService.AddPost(form.value).subscribe(function (data) {
-            console.log('success');
-            form.reset();
-            _this.RetrievePost();
+        var form = CKEDITOR.instances['postdata'].getData();
+        console.log(form);
+        this.postService.AddPost(form).subscribe(function (data) {
+            //   form.reset();
+            CKEDITOR.instances['postdata'].setData('');
+            _this.posts.unshift(data);
             _this.Modal("modal-addpost", false);
         }, function (error) { console.log(error); });
     };
     AccountComponent.prototype.RetrievePost = function () {
         var _this = this;
         this.postService.Retrieve().subscribe(function (data) {
-            _this.posts = data;
-            console.log(data);
+            var postHandle = data.Posts;
+            _this.listComments = data.Comments;
+            for (var i = 0; i < postHandle.length; i++) {
+                var getComments = _this.listComments.filter(function (x) { return x.PostID == postHandle[i].ID; });
+                postHandle[i].Comments = getComments;
+            }
+            _this.posts = postHandle;
+            //console.log("RAW DATA")
+            //console.log(data);
+            //console.log("Post Arranged");
+            //console.log(this.posts);
         }, function (error) { return console.log(error); });
     };
     AccountComponent.prototype.Login = function (form) {
@@ -50,7 +79,7 @@ var AccountComponent = (function () {
             _this.accountStatus = data.FirstName + " " + data.LastName;
             _this.accountID = data.ID;
             _this.Modal("modal-login", false);
-            console.log("accountID: " + _this.accountID);
+            //console.log("accountID: " + this.accountID);
         }, function (error) {
             _this.loginMessage = "Email or Password is Invalid. Please try again.";
             console.log(error);
@@ -74,13 +103,28 @@ var AccountComponent = (function () {
             });
         }
     };
-    AccountComponent.prototype.AddNewComment = function (commentContent, postID) {
+    AccountComponent.prototype.AddNewComment = function (commentContent, postID, event) {
         var _this = this;
         var comment = new Comment_2.CommentModel(commentContent, postID);
-        console.log(comment);
-        this.commentService.AddComment(comment).subscribe(function (data) {
-            _this.RetrievePost();
-        }, function (error) { console.log(error); });
+        if (commentContent != "") {
+            this.commentService.AddComment(comment).subscribe(function (data) {
+                $("input#commentInput").each(function () {
+                    $(this).val('');
+                });
+                for (var i in _this.posts) {
+                    if (_this.posts[i].ID == data.PostID) {
+                        _this.posts[i].Comments.push(data);
+                        break;
+                    }
+                }
+            }, function (error) { console.log(error); _this.postError = "Posting Failed. Please try Again."; });
+        }
+    };
+    AccountComponent.prototype.ClearComment = function (e) {
+        var enterKey = 13;
+        if (e.which == enterKey) {
+            $(this).val('');
+        }
     };
     AccountComponent.prototype.CheckLoggedIn = function () {
         var _this = this;
@@ -89,13 +133,12 @@ var AccountComponent = (function () {
                 console.log(data);
                 _this.accountStatus = data.UserName;
                 _this.accountID = data.ID;
-                console.log("accountID: " + _this.accountID);
             }
             else {
                 _this.accountID = null;
             }
             _this.RetrievePost();
-            console.log("accountID: " + _this.accountID);
+            //console.log("accountID: " + this.accountID);
         });
     };
     AccountComponent.prototype.Logout = function () {
@@ -135,6 +178,11 @@ var AccountComponent = (function () {
         //this.postService.SearchPost(term).subscribe(data => {
         //    this.posts = data;
         //});
+    };
+    AccountComponent.prototype.ParseDOM = function (value) {
+        var sd = value;
+        $('.blogContent img').addClass('image-responsive');
+        return sd;
     };
     AccountComponent.prototype.Modal = function (modalName, toggle) {
         var name = "#" + modalName;
