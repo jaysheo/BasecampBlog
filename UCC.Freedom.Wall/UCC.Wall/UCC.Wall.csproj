@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -64,6 +65,7 @@
     <Compile Include="Logic\Post.cs" />
     <Compile Include="Logic\Reply.cs" />
     <Compile Include="Logic\RetrievePost.cs" />
+    <Compile Include="Logic\UpdatePost.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Context\WallEntities.cs" />
     <Compile Include="Models\Entities\Comment.cs" />

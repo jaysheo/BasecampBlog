@@ -28,7 +28,7 @@ namespace UCC.Wall.Web.Controllers
         [HttpGet]
         public ActionResult Retrieve()
         {
-            var get = postLogic.RetrievePerID();
+            var get = retrievePost.Get();
             return Json(get, JsonRequestBehavior.AllowGet);
         }
 

@@ -7,3 +7,13 @@ C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\b
 C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\obj\Debug\UCC.Wall.dll
 C:\Users\jaymo\Documents\Visual Studio 2015\Projects\UCC.Freedom.Wall\UCC.Wall\obj\Debug\UCC.Wall.pdb
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Debug\UCC.Wall.dll.config
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Debug\UCC.Wall.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Debug\UCC.Wall.pdb
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Debug\EntityFramework.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Debug\EntityFramework.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Debug\UCC.Wall.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Debug\UCC.Wall.pdb
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Debug\UCC.Wall.csprojResolveAssemblyReference.cache

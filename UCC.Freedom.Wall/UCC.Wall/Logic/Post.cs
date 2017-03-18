@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace UCC.Wall.Logic
 {
@@ -13,6 +14,7 @@ namespace UCC.Wall.Logic
         private readonly Comment commentLogic;
         private readonly Models.Context.WallEntities context;
         private readonly Extension.MapToDTO mapDTO;
+        private readonly UpdatePost updatePostLogic;
         public Post()
         {
             postService = new Services.Post();
@@ -20,16 +22,26 @@ namespace UCC.Wall.Logic
             commentLogic = new Comment();
             context = new Models.Context.WallEntities();
             mapDTO = new Extension.MapToDTO();
+            updatePostLogic = new Logic.UpdatePost();
         }
 
         public DTO.Post Create(Models.Entities.Post post)
         {
-            post.UserID = long.Parse(crypt.Decrypt(UserValues().ID));
-            post.UserName = UserValues().UserName;
-            post.DateCreated = DateTime.Now;
-            post.LastUpdatedDate = DateTime.Now;
+            using (TransactionScope scope = new TransactionScope())
+            {
+                post.UserID = long.Parse(crypt.Decrypt(UserValues().ID));
+                post.UserName = UserValues().UserName;
+                post.DateCreated = DateTime.UtcNow;
+                post.LastUpdatedDate = DateTime.UtcNow;
 
-            return mapDTO.Posts(postService.Create(post));
+                DTO.Post postDTO =  updatePostLogic.Upsert(post); 
+              //  DTO.Post postDTO = mapDTO.Posts(postService.Create(post));
+                scope.Complete();
+                return postDTO;
+
+            }
+
+            
 
         }
 

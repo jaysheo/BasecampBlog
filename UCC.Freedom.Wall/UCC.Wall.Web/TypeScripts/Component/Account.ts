@@ -56,7 +56,7 @@ export class AccountComponent {
        
        this.postService.Retrieve().subscribe(data => {
           
-            this.posts = data;
+            this.posts = data.Posts;
             console.log(data);
         }, error => console.log(error));
     }

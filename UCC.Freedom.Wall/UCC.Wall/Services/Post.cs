@@ -17,7 +17,7 @@ namespace UCC.Wall.Services
 
         public Models.Entities.Post Create(Models.Entities.Post entity)
         {
-            context.Posts.Add(entity);
+                        context.Posts.Add(entity);
             context.SaveChanges();
             return entity;
 
@@ -37,7 +37,6 @@ namespace UCC.Wall.Services
         {
             var get = this.GetByID(entity.ID);
             get.Content = entity.Content;
-            get.LastUpdatedDate = DateTime.Now;
             context.SaveChanges();  
             return true;
         }

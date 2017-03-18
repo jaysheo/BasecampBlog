@@ -39,7 +39,7 @@ var AccountComponent = (function () {
     AccountComponent.prototype.RetrievePost = function () {
         var _this = this;
         this.postService.Retrieve().subscribe(function (data) {
-            _this.posts = data;
+            _this.posts = data.Posts;
             console.log(data);
         }, function (error) { return console.log(error); });
     };

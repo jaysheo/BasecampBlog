@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace UCC.Wall.Logic
 {
@@ -13,7 +14,8 @@ namespace UCC.Wall.Logic
         private readonly Models.Context.WallEntities context;
         private readonly Reply replyLogic;
         private readonly Extension.MapToDTO mapDTO;
-      //  private readonly Post postLogic;
+        private readonly UpdatePost updatePostLogic;
+
         public Comment()
         {
             commentService = new Services.Comment();
@@ -21,23 +23,33 @@ namespace UCC.Wall.Logic
             context = new Models.Context.WallEntities();
             replyLogic = new Reply();
             mapDTO = new Extension.MapToDTO();
-            //postLogic = new Post();
+            updatePostLogic = new UpdatePost();
         }
 
         public DTO.Comment Create(DTO.Comment comment)
-        {       
-            comment.DateCreated = DateTime.UtcNow;
-          //  postLogic.UpdatePost(comment.PostID);   
-
-            Models.Entities.Comment commentEntity = new Models.Entities.Comment
+        {
+            using (TransactionScope scope = new TransactionScope())
             {
-                Content = comment.Content,
-                DateCreated = DateTime.UtcNow,
-                PostID = long.Parse(crypt.Decrypt(comment.PostID)),
-                UserName = UserValues().UserName
-            };
+                comment.DateCreated = DateTime.UtcNow;
+                Models.Entities.Comment commentEntity = new Models.Entities.Comment
+                {
+                    Content = comment.Content,
+                    DateCreated = DateTime.UtcNow,
+                    PostID = long.Parse(crypt.Decrypt(comment.PostID)),
+                    UserName = UserValues().UserName
+                };
 
-           return mapDTO.Comments(commentService.Create(commentEntity));
+                Models.Entities.Post post = new Models.Entities.Post();
+                post.ID = long.Parse(crypt.Decrypt(comment.PostID));
+                updatePostLogic.Upsert(post);
+
+                DTO.Comment commentDTO = mapDTO.Comments(commentService.Create(commentEntity));
+                scope.Complete();
+                return commentDTO;                                                             
+
+            }
+
+             
               
         }
 

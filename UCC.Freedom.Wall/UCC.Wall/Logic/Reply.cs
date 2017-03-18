@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace UCC.Wall.Logic
 {
@@ -13,7 +14,7 @@ namespace UCC.Wall.Logic
         private readonly DTO.Reply replyDTO;
         private readonly Component.Cryptogphy.Crypt crypt;
         private readonly Extension.MapToDTO mapDTO;
-      //  private readonly Post postLogic;
+        private readonly UpdatePost updatePostLogic;
 
         public Reply()
         {          
@@ -22,19 +23,30 @@ namespace UCC.Wall.Logic
             replyDTO = new DTO.Reply();
             crypt = new Component.Cryptogphy.Crypt();
             mapDTO = new Extension.MapToDTO();
-            //postLogic = new Post();
+            updatePostLogic = new UpdatePost();
             
         }
 
         public DTO.Reply Create(Models.Entities.Reply reply)
         {
-            var get = context.Comments.Where(x => x.ID.Equals(reply.CommentID)).Select(x => x.PostID).FirstOrDefault();    
+            using (TransactionScope scope = new TransactionScope())
+            {       
+                var get = context.Comments.Where(x => x.ID.Equals(reply.CommentID)).Select(x => x.PostID).FirstOrDefault();
 
-           // postLogic.UpdatePost(get.ToString());
+                Models.Entities.Post post = new Models.Entities.Post();
+                post.ID = get;
 
-            reply.UserName = UserValues().UserName;
-            reply.DateCreated = DateTime.Now;
-            return mapDTO.Replies(replyService.Create(reply));
+                updatePostLogic.Upsert(post);
+
+                reply.UserName = UserValues().UserName;
+                reply.DateCreated = DateTime.UtcNow;
+
+                DTO.Reply replyDTO = mapDTO.Replies(replyService.Create(reply));
+                scope.Complete();
+                return replyDTO; 
+
+            }
+
 
         }
 

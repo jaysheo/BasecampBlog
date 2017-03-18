@@ -12,7 +12,7 @@ namespace UCC.Wall.Logic
         private readonly Services.User userService;
         private readonly DTO.User userDTO;
         private readonly Models.Context.WallEntities context;
-        private readonly Component.Cryptogphy.Crypt crypt;
+      //  private readonly Component.Cryptogphy.Crypt crypt;
         private readonly Extension.MapToDTO mapDTO;
 
         public Account()

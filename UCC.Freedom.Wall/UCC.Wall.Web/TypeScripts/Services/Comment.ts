@@ -14,8 +14,6 @@ export class CommentService {
 
     
     public AddComment(post: CommentModel): Observable<boolean> {
-        console.log("comment");
-        console.log(post);
         return this.http.post("Comment/Create", JSON.stringify(post), { headers: this.headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
