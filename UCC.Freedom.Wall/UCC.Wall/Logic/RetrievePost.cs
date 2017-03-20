@@ -23,9 +23,9 @@ namespace UCC.Wall.Logic
 
         }
 
-        public DTO.RetrievePost Get()
+        public DTO.RetrievePost Get(int skip,int take)
         {
-            List<DTO.Post> arrangePost = postLogic.Retrieve().OrderByDescending(x => x.LastUpdatedDate).ToList();    
+            List<DTO.Post> arrangePost = postLogic.Retrieve(skip, take);
 
             return new DTO.RetrievePost
             {

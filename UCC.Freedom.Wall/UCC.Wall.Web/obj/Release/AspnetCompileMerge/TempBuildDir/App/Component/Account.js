@@ -27,10 +27,14 @@ var AccountComponent = (function () {
         this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
+        $("img .blogimage").click(function () {
+            var get = $(this).attr("src");
+            alert(get);
+        });
     };
     AccountComponent.prototype.InitCKEDITOR = function () {
         CKEDITOR.replace('postdata', {
-            plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles,video',
+            plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles',
             on: {
                 instanceReady: function () {
                     this.dataProcessor.htmlFilter.addRules({
@@ -49,12 +53,13 @@ var AccountComponent = (function () {
         var _this = this;
         var form = CKEDITOR.instances['postdata'].getData();
         console.log(form);
-        this.postService.AddPost(form).subscribe(function (data) {
-            //   form.reset();
-            CKEDITOR.instances['postdata'].setData('');
-            _this.posts.unshift(data);
-            _this.Modal("modal-addpost", false);
-        }, function (error) { console.log(error); });
+        if (form != "") {
+            this.postService.AddPost(form).subscribe(function (data) {
+                CKEDITOR.instances['postdata'].setData('');
+                _this.posts.unshift(data);
+                _this.Modal("modal-addpost", false);
+            }, function (error) { console.log(error); });
+        }
     };
     AccountComponent.prototype.RetrievePost = function () {
         var _this = this;

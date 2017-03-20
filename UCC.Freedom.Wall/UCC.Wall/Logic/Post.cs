@@ -45,35 +45,35 @@ namespace UCC.Wall.Logic
 
         }
 
-        public List<DTO.Post> RetrievePerID()
-        {
+        //public List<DTO.Post> RetrievePerID()
+        //{
           
-            List<DTO.Post> listPostDTO = new List<DTO.Post>();
-            var get = postService.Retrieve();
-            var descGet = get.OrderByDescending(x => x.ID).ToList();
-            foreach (var post in descGet)
-            {
-                var comments = commentLogic.RetrievePerID(post.ID);
+        //    List<DTO.Post> listPostDTO = new List<DTO.Post>();
+        //    var get = postService.Retrieve();
+        //    var descGet = get.OrderByDescending(x => x.ID).ToList();
+        //    foreach (var post in descGet)
+        //    {
+        //        var comments = commentLogic.RetrievePerID(post.ID);
                
-                DTO.Post postDTO = new DTO.Post {
-                    ID = crypt.Encrypt(post.ID.ToString()),
-                    Content = post.Content,
-                    UserID = crypt.Encrypt(post.UserID.ToString()),
-                    DateCreated = post.DateCreated,
-                    UserName = post.UserName,
-                    Comments = comments
-                };
+        //        DTO.Post postDTO = new DTO.Post {
+        //            ID = crypt.Encrypt(post.ID.ToString()),
+        //            Content = post.Content,
+        //            UserID = crypt.Encrypt(post.UserID.ToString()),
+        //            DateCreated = post.DateCreated,
+        //            UserName = post.UserName,
+        //            Comments = comments
+        //        };
 
-                listPostDTO.Add(postDTO);
-            }
+        //        listPostDTO.Add(postDTO);
+        //    }
 
-            return listPostDTO;
+        //    return listPostDTO;
 
-        }
+        //}
 
-        public List<DTO.Post> Retrieve() {
+        public List<DTO.Post> Retrieve(int skip,int take) {
 
-            var get = postService.Retrieve();
+            var get = postService.Retrieve(skip,take);
             List<DTO.Post>listPostDTO =  new List<DTO.Post>();
             foreach (var post in get)
             {

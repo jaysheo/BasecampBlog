@@ -13,15 +13,15 @@ export class PostService {
     }
 
 
-    public Retrieve():any {
-        return this.http.get("Post/Retrieve", { headers: this.headers })
+    public Retrieve(skip:number, take:number):any {
+        return this.http.get("Post/Retrieve?skip=" + skip +"&take=" + take, { headers: this.headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 
     public AddPost(post: any): Observable<boolean> {
-        console.log(post);
+    
         return this.http.post("Post/Create", JSON.stringify({ Content: post}), { headers: this.headers })
-            .map((res: Response) => res.json()).catch(this.handleError);
+            .map((res: Response) => res.json())
     }
 
     public SearchPost(post: string): any {

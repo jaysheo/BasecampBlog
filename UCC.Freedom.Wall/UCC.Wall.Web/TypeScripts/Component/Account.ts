@@ -36,18 +36,58 @@ export class AccountComponent {
     private accountID: string;
     private postError: string;
 
+    private skip: number = 0;
+    private take: number = 2;
+
     ngOnInit(): any {
 
       
         this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
-      
+        this.RetrievePost(this.skip,this.take);   
+      //  this.AddPostOnScrollDown(this.skip,this.take);
+
+        $(window).scroll(() => {
+            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                // ajax call get data from server and append to the div
+                this.skip += this.take;
+                this.take = 2;
+                console.log(this.skip + " " + this.take);
+              this.AddPostOnScrollDown(this.skip, this.take);
+
+
+            }
+        });
+    }
+
+
+    AddPostOnScrollDown(skip:number,take:number) {
+        this.postService.Retrieve(skip, take).subscribe(data => {
+
+            let postHandle: any[] = data.Posts;
+            this.listComments = data.Comments;
+
+         
+            if (postHandle.length != 0) {
+            for (var i = 0; i < postHandle.length; i++) {
+                let getComments = this.listComments.filter(x => x.PostID == postHandle[i].ID);
+                postHandle[i].Comments = getComments;
+            }
+
+            for (var x = 0; x < postHandle.length; x++){
+                this.posts.push(postHandle[x]);
+            }
+                
+            }
+           
+
+        }, error => console.log(error));
     }
 
     InitCKEDITOR() {
         CKEDITOR.replace('postdata', {
-            plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles,video',
+            plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles',
             on: {
                 instanceReady: function () {
                     this.dataProcessor.htmlFilter.addRules({
@@ -84,9 +124,9 @@ export class AccountComponent {
        
     }
 
-    RetrievePost(): any{
+    RetrievePost(skip:number,take:number): any{
        
-       this.postService.Retrieve().subscribe(data => {
+       this.postService.Retrieve(skip,take).subscribe(data => {
           
           let postHandle:any[] = data.Posts;
           this.listComments = data.Comments;
@@ -184,14 +224,7 @@ export class AccountComponent {
 
     }
 
-    ClearComment(e) {
-     
-            var enterKey = 13;
-            if (e.which == enterKey) {
-                $(this).val('');
-          
-        }
-    }
+  
 
     CheckLoggedIn() {
         this.accountService.CheckLoggedIn().subscribe(data => {
@@ -206,7 +239,7 @@ export class AccountComponent {
             }
 
          
-            this.RetrievePost();
+        
             //console.log("accountID: " + this.accountID);
         });
        
@@ -235,9 +268,11 @@ export class AccountComponent {
     }
 
     DeletePost(id: string) {
-     
+
+        this.skip = 0;
+        this.take = 0;
         this.postService.Delete(id).subscribe(data => {
-            this.RetrievePost();
+            this.RetrievePost(this.skip,this.take);
         },error=> console.log(error));
     }
 
@@ -249,7 +284,7 @@ export class AccountComponent {
                     this.posts = data;
                 });
             } else {
-                this.RetrievePost();
+               // this.RetrievePost();
             }
           
 

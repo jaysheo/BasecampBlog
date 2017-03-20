@@ -144,7 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\bundle.js" />
-    <Content Include="Content\Images\icon-wall.jpg" />
+    <Content Include="Content\Images\icon-wall.png" />
     <Content Include="Content\library\ckeditor\adapters\jquery.js" />
     <Content Include="Content\library\ckeditor\build-config.js" />
     <Content Include="Content\library\ckeditor\ckeditor.js" />
@@ -362,6 +362,12 @@
     <Content Include="Content\library\ckeditor\plugins\specialchar\dialogs\specialchar.js" />
     <Content Include="Content\library\ckeditor\plugins\tabletools\dialogs\tableCell.js" />
     <Content Include="Content\library\ckeditor\plugins\table\dialogs\table.js" />
+    <Content Include="Content\library\ckeditor\plugins\video\dialogs\video.js" />
+    <Content Include="Content\library\ckeditor\plugins\video\docs\install.html" />
+    <Content Include="Content\library\ckeditor\plugins\video\docs\styles.css" />
+    <Content Include="Content\library\ckeditor\plugins\video\images\icon.png" />
+    <Content Include="Content\library\ckeditor\plugins\video\images\placeholder.png" />
+    <Content Include="Content\library\ckeditor\plugins\video\plugin.js" />
     <Content Include="Content\library\ckeditor\plugins\wsc\dialogs\ciframe.html" />
     <Content Include="Content\library\ckeditor\plugins\wsc\dialogs\tmpFrameset.html" />
     <Content Include="Content\library\ckeditor\plugins\wsc\dialogs\wsc.css" />

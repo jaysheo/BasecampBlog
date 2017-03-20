@@ -72,43 +72,35 @@
                                 <hr/>
                               
                                    <div class="blogContent" [innerHTML]="ParseDOM(post.Content)"></div>
-
-                             
-                               
-
-                               
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 panelBottom">
                             <hr/>
-
-
                             <span *ngIf="accountID != null" class="glyphicon glyphicon-comment" style="color:darkgray; margin-right:5px;"> Comments <span *ngIf="post.Comments?.length != 0">({{post.Comments?.length}})</span></span>
-                            <span *ngIf="accountID == null" class="glyphicon glyphicon-comment"  data-toggle="modal" data-target="#modal-login" style="color:darkgray; margin-right:5px;"> Comment</span>
+                            <span *ngIf="accountID == null" class="glyphicon glyphicon-comment"  data-toggle="modal" data-target="#modal-login" style="color:darkgray; margin-right:5px;"> Comments <span *ngIf="post.Comments?.length != 0">({{post.Comments?.length}})</span></span>
                             <div style="margin-left:20px;" *ngFor="let comment of post.Comments">
                                 <div class="row">
                                     <div class="col-md-12 panelTop">
-
-                                        <div class="col-md-12">
-                                            <h5>{{comment.UserName}}</h5>
-                                            <h6><small class="glyphicon glyphicon-time" style="color:darkgray;"></small> {{ParseDate(comment.DateCreated)}}</h6>
+                                        <a *ngIf="accountStatus == comment.UserName" title="Delete Comment"  class="pull-right" style="z-index:10"><i style="color:#e0d2c3;" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+                                        <div class="col-md-12" style="margin-bottom:10px;">
+                                            <h5 style="color:dimgray;" ><b>{{comment.UserName}}</b> <span><small style="font-size:xx-small; color:darkgray;" class="glyphicon glyphicon-time"></small> {{ParseDate(comment.DateCreated)}}</span></h5>
+                                            <p class="btn-info" style="display:inline-block; min-width:60px; padding:10px; border-radius:5px;">{{comment.Content}}</p> 
+                                            <!--<h6><small class="glyphicon glyphicon-time" style="color:darkgray;"></small> {{ParseDate(comment.DateCreated)}}</h6>-->
                                             
-                                            <p>{{comment.Content}}</p>
+                                            
                                         </div>
-                                        <hr />
+                                      
                                     </div>
                                 </div>
                             </div>
-                        
 
-                         
                             <div class="col-md-12" *ngIf="accountStatus != 'Account'">
                              
                                 <!--<form (keyup.enter)="AddNewComment(commentData)" #commentData="ngForm">-->
                                   
-                                    <input id="commentInput" title="Press enter" type="text" class="form-control" style="margin-top:20px; width:100%;" (keyup.enter)="AddNewComment(commentContent.value, post.ID, $event)" placeholder="Comment" required=""  #commentContent />
+                                    <input id="commentInput" title="Press enter" type="text" class="form-control" style="margin-top:20px;   display: inline-block; width:100%;" (keyup.enter)="AddNewComment(commentContent.value, post.ID, $event)" placeholder="Comment" required=""  #commentContent />
                                    
                                     <hr />
 

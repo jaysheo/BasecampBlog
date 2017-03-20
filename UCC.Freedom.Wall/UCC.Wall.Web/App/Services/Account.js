@@ -18,11 +18,11 @@ var AccountService = (function () {
     }
     AccountService.prototype.Login = function (account) {
         return this.http.post("Account/Login", JSON.stringify(account), { headers: this.headers })
-            .map(function (res) { return res.json(); }).catch(this.handleError);
+            .map(function (res) { return res.json(); });
     };
     AccountService.prototype.SignUp = function (account) {
         return this.http.post("Account/SignUp", JSON.stringify(account), { headers: this.headers })
-            .map(function (res) { return res.json(); }).catch(this.handleError);
+            .map(function (res) { return res.json(); });
     };
     AccountService.prototype.CheckLoggedIn = function () {
         return this.http.get("Account/CheckLoggedIn", { headers: this.headers })

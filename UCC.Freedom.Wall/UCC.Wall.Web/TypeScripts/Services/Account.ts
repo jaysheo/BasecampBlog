@@ -15,12 +15,12 @@ export class AccountService {
 
     public Login(account: UserModel): Observable<UserModel> {
         return this.http.post("Account/Login", JSON.stringify(account), { headers: this.headers })
-            .map((res: Response) => res.json()).catch(this.handleError);
+            .map((res: Response) => res.json());
     }
 
     public SignUp(account: UserModel): Observable<boolean> {
         return this.http.post("Account/SignUp", JSON.stringify(account), { headers: this.headers })
-            .map((res: Response) => res.json()).catch(this.handleError);
+            .map((res: Response) => res.json());
     }
 
     public CheckLoggedIn(): any{

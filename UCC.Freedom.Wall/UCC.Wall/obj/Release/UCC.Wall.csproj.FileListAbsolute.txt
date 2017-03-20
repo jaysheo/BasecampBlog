@@ -16,3 +16,4 @@ C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\Enti
 C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\bin\Release\EntityFramework.SqlServer.xml
 C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Release\UCC.Wall.dll
 C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Release\UCC.Wall.pdb
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall\obj\Release\UCC.Wall.csprojResolveAssemblyReference.cache

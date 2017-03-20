@@ -26,9 +26,9 @@ namespace UCC.Wall.Web.Controllers
 
         // GET: Post
         [HttpGet]
-        public ActionResult Retrieve()
+        public ActionResult Retrieve(int skip,int take)
         {
-            var get = retrievePost.Get();
+            var get = retrievePost.Get(skip,take);
             return Json(get, JsonRequestBehavior.AllowGet);
         }
 
@@ -47,11 +47,6 @@ namespace UCC.Wall.Web.Controllers
             return Json(get, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public ActionResult Get()
-        {
-            var get = retrievePost.Get();
-            return Json(get, JsonRequestBehavior.AllowGet);
-        }
+      
     }
 }

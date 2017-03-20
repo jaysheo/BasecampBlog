@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UCC Wall</title>
-     <link rel="icon" href="~/Content/Images/icon-wall.jpg" type="image/x-icon" />
+     <link rel="icon" href="~/Content/Images/icon-wall.png" type="image/x-icon" />
     <!-- 1. Load libraries -->
     <!-- Polyfill(s) for older browsers -->
     <link href="~/Content/Site.css" rel="stylesheet" />
@@ -31,6 +31,8 @@
         System.import('../App/bundle').catch(function (err) {
             console.error(err);
         });
+
+       
     </script>
 
 </head>
@@ -62,6 +64,8 @@
         $(".modal-fullscreen").on('hidden.bs.modal', function () {
             $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
         });
+
+      
 
     </script>
   
