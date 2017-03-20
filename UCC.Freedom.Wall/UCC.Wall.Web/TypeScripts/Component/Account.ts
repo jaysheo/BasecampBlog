@@ -152,10 +152,10 @@ export class AccountComponent {
            this.posts = postHandle;
            this.statusRetrievePost = false;
            this.statusRetrievePostResult = postHandle.length;
-           //console.log("RAW DATA")
-           //console.log(data);
-           //console.log("Post Arranged");
-           //console.log(this.posts);
+           console.log("RAW DATA")
+           console.log(data);
+           console.log("Post Arranged");
+           console.log(this.posts);
 
        }, error => { console.log(error); this.statusRetrievePost = false; });
     }

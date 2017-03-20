@@ -12,6 +12,8 @@ namespace UCC.Wall.Logic
         private readonly Comment commentLogic;
         private readonly Reply replyLogic;
         private readonly Component.Cryptogphy.Crypt crypt;
+        private readonly Models.Context.WallEntities context;
+        private readonly Extension.MapToDTO mapDTO;
        
         public RetrievePost()
         {
@@ -19,6 +21,8 @@ namespace UCC.Wall.Logic
             commentLogic = new Comment();
             replyLogic = new Reply();
             crypt = new Component.Cryptogphy.Crypt();
+            context = new Models.Context.WallEntities();
+            mapDTO = new Extension.MapToDTO();
          
 
         }
@@ -26,12 +30,22 @@ namespace UCC.Wall.Logic
         public DTO.RetrievePost Get(int skip,int take)
         {
             List<DTO.Post> arrangePost = postLogic.Retrieve(skip, take);
+            List<DTO.Comment> commentPerID = new List<DTO.Comment>();
+            
+
+            var getID = arrangePost.Select(x => long.Parse(crypt.Decrypt(x.ID))).ToList();
+
+            var getCommentsPerID = context.Comments.Where(x => getID.Contains(x.PostID)).ToList();
+            foreach (var comment in getCommentsPerID)
+            {
+                commentPerID.Add(mapDTO.Comments(comment));      
+            }
 
             return new DTO.RetrievePost
             {
                 Posts = arrangePost,
-                Comments = commentLogic.Retrieve(),
-                Replies = replyLogic.Retrieve()
+                Comments =commentPerID
+               // Replies = replyLogic.Retrieve()
             };
             
         }

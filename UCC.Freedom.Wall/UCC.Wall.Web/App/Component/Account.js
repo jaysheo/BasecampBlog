@@ -108,10 +108,10 @@ var AccountComponent = (function () {
             _this.posts = postHandle;
             _this.statusRetrievePost = false;
             _this.statusRetrievePostResult = postHandle.length;
-            //console.log("RAW DATA")
-            //console.log(data);
-            //console.log("Post Arranged");
-            //console.log(this.posts);
+            console.log("RAW DATA");
+            console.log(data);
+            console.log("Post Arranged");
+            console.log(_this.posts);
         }, function (error) { console.log(error); _this.statusRetrievePost = false; });
     };
     AccountComponent.prototype.Login = function (form) {
