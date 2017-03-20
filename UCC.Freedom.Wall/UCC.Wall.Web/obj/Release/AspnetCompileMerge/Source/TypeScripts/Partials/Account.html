@@ -116,6 +116,13 @@
             </div>
         </div>
     </div>
+    
+    <div class="text-center" style="z-index:1000" *ngIf="statusRetrievePost != false">
+        <img style="margin-top:-50px;" src="/Content/Images/loading.gif" height="60" width="100">
+    </div>
+    <div class="text-center" *ngIf="statusRetrievePost != true">
+        <small style="color:gray">End of Result</small>
+    </div>
 </div>
 
 <!--End Content-->

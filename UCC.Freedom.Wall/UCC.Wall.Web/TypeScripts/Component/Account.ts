@@ -38,22 +38,22 @@ export class AccountComponent {
 
     private skip: number = 0;
     private take: number = 2;
+    private statusRetrievePost: boolean = true;
+    private statusRetrievePostResult: number;
 
     ngOnInit(): any {
 
-      
+
+        
         this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
         this.RetrievePost(this.skip,this.take);   
-      //  this.AddPostOnScrollDown(this.skip,this.take);
-
         $(window).scroll(() => {
             if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                 // ajax call get data from server and append to the div
                 this.skip += this.take;
                 this.take = 2;
-                console.log(this.skip + " " + this.take);
               this.AddPostOnScrollDown(this.skip, this.take);
 
 
@@ -62,27 +62,40 @@ export class AccountComponent {
     }
 
 
-    AddPostOnScrollDown(skip:number,take:number) {
-        this.postService.Retrieve(skip, take).subscribe(data => {
+    AddPostOnScrollDown(skip: number, take: number) {
+        this.statusRetrievePost = true;
+        if (this.statusRetrievePostResult != 0 || this.statusRetrievePost != true){
+            this.postService.Retrieve(skip, take).subscribe(data => {
 
-            let postHandle: any[] = data.Posts;
-            this.listComments = data.Comments;
+                let postHandle: any[] = data.Posts;
+                this.listComments = data.Comments;
 
-         
-            if (postHandle.length != 0) {
-            for (var i = 0; i < postHandle.length; i++) {
-                let getComments = this.listComments.filter(x => x.PostID == postHandle[i].ID);
-                postHandle[i].Comments = getComments;
-            }
+              
+                this.statusRetrievePostResult = postHandle.length;
+                console.log(this.statusRetrievePostResult);
 
-            for (var x = 0; x < postHandle.length; x++){
-                this.posts.push(postHandle[x]);
-            }
-                
-            }
-           
+             
 
-        }, error => console.log(error));
+                if (postHandle.length != 0) {
+                    for (var i = 0; i < postHandle.length; i++) {
+                        let getComments = this.listComments.filter(x => x.PostID == postHandle[i].ID);
+                        postHandle[i].Comments = getComments;
+                    }
+
+                    for (var x = 0; x < postHandle.length; x++) {
+                        this.posts.push(postHandle[x]);
+                    }
+
+                }
+                this.statusRetrievePost = false;
+
+
+            }, error => console.log(error));
+        } else {
+            this.statusRetrievePost = false;
+        }
+
+       
     }
 
     InitCKEDITOR() {
@@ -125,7 +138,7 @@ export class AccountComponent {
     }
 
     RetrievePost(skip:number,take:number): any{
-       
+        this.statusRetrievePost = true;
        this.postService.Retrieve(skip,take).subscribe(data => {
           
           let postHandle:any[] = data.Posts;
@@ -137,12 +150,14 @@ export class AccountComponent {
                postHandle[i].Comments = getComments;
           }
            this.posts = postHandle;
+           this.statusRetrievePost = false;
+           this.statusRetrievePostResult = postHandle.length;
            //console.log("RAW DATA")
            //console.log(data);
            //console.log("Post Arranged");
            //console.log(this.posts);
 
-        }, error => console.log(error));
+       }, error => { console.log(error); this.statusRetrievePost = false; });
     }
 
    
@@ -270,7 +285,7 @@ export class AccountComponent {
     DeletePost(id: string) {
 
         this.skip = 0;
-        this.take = 0;
+        this.take = 2;
         this.postService.Delete(id).subscribe(data => {
             this.RetrievePost(this.skip,this.take);
         },error=> console.log(error));

@@ -22,15 +22,50 @@ var AccountComponent = (function () {
         this.postService = postService;
         this.commentService = commentService;
         this.accountStatus = 'Account';
+        this.skip = 0;
+        this.take = 2;
+        this.statusRetrievePost = true;
     }
     AccountComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
-        $("img .blogimage").click(function () {
-            var get = $(this).attr("src");
-            alert(get);
+        this.RetrievePost(this.skip, this.take);
+        $(window).scroll(function () {
+            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                // ajax call get data from server and append to the div
+                _this.skip += _this.take;
+                _this.take = 2;
+                _this.AddPostOnScrollDown(_this.skip, _this.take);
+            }
         });
+    };
+    AccountComponent.prototype.AddPostOnScrollDown = function (skip, take) {
+        var _this = this;
+        this.statusRetrievePost = true;
+        if (this.statusRetrievePostResult != 0 || this.statusRetrievePost != true) {
+            this.postService.Retrieve(skip, take).subscribe(function (data) {
+                var postHandle = data.Posts;
+                _this.listComments = data.Comments;
+                console.log(postHandle.length);
+                _this.statusRetrievePostResult = postHandle.length;
+                console.log(_this.statusRetrievePostResult);
+                if (postHandle.length != 0) {
+                    for (var i = 0; i < postHandle.length; i++) {
+                        var getComments = _this.listComments.filter(function (x) { return x.PostID == postHandle[i].ID; });
+                        postHandle[i].Comments = getComments;
+                    }
+                    for (var x = 0; x < postHandle.length; x++) {
+                        _this.posts.push(postHandle[x]);
+                    }
+                }
+                _this.statusRetrievePost = false;
+            }, function (error) { return console.log(error); });
+        }
+        else {
+            this.statusRetrievePost = false;
+        }
     };
     AccountComponent.prototype.InitCKEDITOR = function () {
         CKEDITOR.replace('postdata', {
@@ -61,9 +96,10 @@ var AccountComponent = (function () {
             }, function (error) { console.log(error); });
         }
     };
-    AccountComponent.prototype.RetrievePost = function () {
+    AccountComponent.prototype.RetrievePost = function (skip, take) {
         var _this = this;
-        this.postService.Retrieve().subscribe(function (data) {
+        this.statusRetrievePost = true;
+        this.postService.Retrieve(skip, take).subscribe(function (data) {
             var postHandle = data.Posts;
             _this.listComments = data.Comments;
             for (var i = 0; i < postHandle.length; i++) {
@@ -71,11 +107,13 @@ var AccountComponent = (function () {
                 postHandle[i].Comments = getComments;
             }
             _this.posts = postHandle;
+            _this.statusRetrievePost = false;
+            _this.statusRetrievePostResult = postHandle.length;
             //console.log("RAW DATA")
             //console.log(data);
             //console.log("Post Arranged");
             //console.log(this.posts);
-        }, function (error) { return console.log(error); });
+        }, function (error) { console.log(error); _this.statusRetrievePost = false; });
     };
     AccountComponent.prototype.Login = function (form) {
         var _this = this;
@@ -125,12 +163,6 @@ var AccountComponent = (function () {
             }, function (error) { console.log(error); _this.postError = "Posting Failed. Please try Again."; });
         }
     };
-    AccountComponent.prototype.ClearComment = function (e) {
-        var enterKey = 13;
-        if (e.which == enterKey) {
-            $(this).val('');
-        }
-    };
     AccountComponent.prototype.CheckLoggedIn = function () {
         var _this = this;
         this.accountService.CheckLoggedIn().subscribe(function (data) {
@@ -142,7 +174,6 @@ var AccountComponent = (function () {
             else {
                 _this.accountID = null;
             }
-            _this.RetrievePost();
             //console.log("accountID: " + this.accountID);
         });
     };
@@ -163,8 +194,10 @@ var AccountComponent = (function () {
     };
     AccountComponent.prototype.DeletePost = function (id) {
         var _this = this;
+        this.skip = 0;
+        this.take = 2;
         this.postService.Delete(id).subscribe(function (data) {
-            _this.RetrievePost();
+            _this.RetrievePost(_this.skip, _this.take);
         }, function (error) { return console.log(error); });
     };
     AccountComponent.prototype.SearchChange = function (term) {
@@ -176,7 +209,6 @@ var AccountComponent = (function () {
                 });
             }
             else {
-                _this.RetrievePost();
             }
         }, 100);
         //console.log(term)

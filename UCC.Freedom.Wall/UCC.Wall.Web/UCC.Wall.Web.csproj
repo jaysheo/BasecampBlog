@@ -145,6 +145,8 @@
   <ItemGroup>
     <Content Include="App\bundle.js" />
     <Content Include="Content\Images\icon-wall.png" />
+    <Content Include="Content\Images\loading-bottom.gif" />
+    <Content Include="Content\Images\loading.gif" />
     <Content Include="Content\library\ckeditor\adapters\jquery.js" />
     <Content Include="Content\library\ckeditor\build-config.js" />
     <Content Include="Content\library\ckeditor\ckeditor.js" />
@@ -539,6 +541,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="libs\" />
+    <Folder Include="TypeScripts\Resources\Content\Images\" />
     <Folder Include="TypeScripts\Resources\Pipes\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Comment\" />

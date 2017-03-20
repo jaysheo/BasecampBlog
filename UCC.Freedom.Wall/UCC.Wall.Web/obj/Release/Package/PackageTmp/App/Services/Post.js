@@ -16,14 +16,13 @@ var PostService = (function () {
         this.http = http;
         this.headers = new http_1.Headers({ "Content-Type": "application/json" });
     }
-    PostService.prototype.Retrieve = function () {
-        return this.http.get("Post/Retrieve", { headers: this.headers })
+    PostService.prototype.Retrieve = function (skip, take) {
+        return this.http.get("Post/Retrieve?skip=" + skip + "&take=" + take, { headers: this.headers })
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };
     PostService.prototype.AddPost = function (post) {
-        console.log(post);
         return this.http.post("Post/Create", JSON.stringify({ Content: post }), { headers: this.headers })
-            .map(function (res) { return res.json(); }).catch(this.handleError);
+            .map(function (res) { return res.json(); });
     };
     PostService.prototype.SearchPost = function (post) {
         return this.http.get("Post/Search?term=" + post, { headers: this.headers })

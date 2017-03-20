@@ -24,6 +24,7 @@ var AccountComponent = (function () {
         this.accountStatus = 'Account';
         this.skip = 0;
         this.take = 2;
+        this.statusRetrievePost = true;
     }
     AccountComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -31,32 +32,39 @@ var AccountComponent = (function () {
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
         this.RetrievePost(this.skip, this.take);
-        //  this.AddPostOnScrollDown(this.skip,this.take);
         $(window).scroll(function () {
             if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                 // ajax call get data from server and append to the div
                 _this.skip += _this.take;
                 _this.take = 2;
-                console.log(_this.skip + " " + _this.take);
                 _this.AddPostOnScrollDown(_this.skip, _this.take);
             }
         });
     };
     AccountComponent.prototype.AddPostOnScrollDown = function (skip, take) {
         var _this = this;
-        this.postService.Retrieve(skip, take).subscribe(function (data) {
-            var postHandle = data.Posts;
-            _this.listComments = data.Comments;
-            if (postHandle.length != 0) {
-                for (var i = 0; i < postHandle.length; i++) {
-                    var getComments = _this.listComments.filter(function (x) { return x.PostID == postHandle[i].ID; });
-                    postHandle[i].Comments = getComments;
+        this.statusRetrievePost = true;
+        if (this.statusRetrievePostResult != 0 || this.statusRetrievePost != true) {
+            this.postService.Retrieve(skip, take).subscribe(function (data) {
+                var postHandle = data.Posts;
+                _this.listComments = data.Comments;
+                _this.statusRetrievePostResult = postHandle.length;
+                console.log(_this.statusRetrievePostResult);
+                if (postHandle.length != 0) {
+                    for (var i = 0; i < postHandle.length; i++) {
+                        var getComments = _this.listComments.filter(function (x) { return x.PostID == postHandle[i].ID; });
+                        postHandle[i].Comments = getComments;
+                    }
+                    for (var x = 0; x < postHandle.length; x++) {
+                        _this.posts.push(postHandle[x]);
+                    }
                 }
-                for (var x = 0; x < postHandle.length; x++) {
-                    _this.posts.push(postHandle[x]);
-                }
-            }
-        }, function (error) { return console.log(error); });
+                _this.statusRetrievePost = false;
+            }, function (error) { return console.log(error); });
+        }
+        else {
+            this.statusRetrievePost = false;
+        }
     };
     AccountComponent.prototype.InitCKEDITOR = function () {
         CKEDITOR.replace('postdata', {
@@ -89,6 +97,7 @@ var AccountComponent = (function () {
     };
     AccountComponent.prototype.RetrievePost = function (skip, take) {
         var _this = this;
+        this.statusRetrievePost = true;
         this.postService.Retrieve(skip, take).subscribe(function (data) {
             var postHandle = data.Posts;
             _this.listComments = data.Comments;
@@ -97,11 +106,13 @@ var AccountComponent = (function () {
                 postHandle[i].Comments = getComments;
             }
             _this.posts = postHandle;
+            _this.statusRetrievePost = false;
+            _this.statusRetrievePostResult = postHandle.length;
             //console.log("RAW DATA")
             //console.log(data);
             //console.log("Post Arranged");
             //console.log(this.posts);
-        }, function (error) { return console.log(error); });
+        }, function (error) { console.log(error); _this.statusRetrievePost = false; });
     };
     AccountComponent.prototype.Login = function (form) {
         var _this = this;
@@ -183,7 +194,7 @@ var AccountComponent = (function () {
     AccountComponent.prototype.DeletePost = function (id) {
         var _this = this;
         this.skip = 0;
-        this.take = 0;
+        this.take = 2;
         this.postService.Delete(id).subscribe(function (data) {
             _this.RetrievePost(_this.skip, _this.take);
         }, function (error) { return console.log(error); });
