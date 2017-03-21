@@ -48,7 +48,6 @@ var AccountComponent = (function () {
             this.postService.Retrieve(skip, take).subscribe(function (data) {
                 var postHandle = data.Posts;
                 _this.listComments = data.Comments;
-                console.log(postHandle.length);
                 _this.statusRetrievePostResult = postHandle.length;
                 console.log(_this.statusRetrievePostResult);
                 if (postHandle.length != 0) {
@@ -109,10 +108,10 @@ var AccountComponent = (function () {
             _this.posts = postHandle;
             _this.statusRetrievePost = false;
             _this.statusRetrievePostResult = postHandle.length;
-            //console.log("RAW DATA")
-            //console.log(data);
-            //console.log("Post Arranged");
-            //console.log(this.posts);
+            console.log("RAW DATA");
+            console.log(data);
+            console.log("Post Arranged");
+            console.log(_this.posts);
         }, function (error) { console.log(error); _this.statusRetrievePost = false; });
     };
     AccountComponent.prototype.Login = function (form) {

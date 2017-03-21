@@ -33,11 +33,13 @@ namespace UCC.Wall.Logic
             List<DTO.Comment> commentPerID = new List<DTO.Comment>();
             
 
-            var getID = arrangePost.Select(x => long.Parse(crypt.Decrypt(x.ID))).ToList();
+            List<long> getID = arrangePost.Select(x => long.Parse(crypt.Decrypt(x.ID))).ToList();
 
-            var getCommentsPerID = context.Comments.Where(x => getID.Contains(x.PostID)).ToList();
-            foreach (var comment in getCommentsPerID)
+            List<Models.Entities.Comment> getCommentsPerID = context.Comments.Where(x => getID.Contains(x.PostID)).ToList();
+
+            foreach (Models.Entities.Comment comment in getCommentsPerID)
             {
+                
                 commentPerID.Add(mapDTO.Comments(comment));      
             }
 
