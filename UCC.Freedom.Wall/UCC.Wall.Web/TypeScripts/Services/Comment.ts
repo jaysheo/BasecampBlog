@@ -2,6 +2,7 @@
 import { Http, Response, Headers } from "@angular/http";
 import { Observable } from "rxjs/Rx";
 import { CommentModel } from "../Models/Comment";
+import { GlobalTicket } from "../Resources/Utility/Urls/Ticket";
 
 @Injectable()
 export class CommentService {
@@ -9,12 +10,12 @@ export class CommentService {
 
 
     constructor(private http: Http) {
-        this.headers = new Headers({ "Content-Type": "application/json" });
+    
     }
 
     
     public AddComment(post: CommentModel):any {
-        return this.http.post("Comment/Create", JSON.stringify(post), { headers: this.headers })
+        return this.http.post("Comment/Create", JSON.stringify(post), { headers: GlobalTicket.Headers})
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 

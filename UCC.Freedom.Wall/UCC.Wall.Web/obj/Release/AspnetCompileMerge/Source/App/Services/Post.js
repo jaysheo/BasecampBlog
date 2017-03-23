@@ -11,25 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 var Rx_1 = require("rxjs/Rx");
+var Ticket_1 = require("../Resources/Utility/Urls/Ticket");
 var PostService = (function () {
     function PostService(http) {
         this.http = http;
         this.headers = new http_1.Headers({ "Content-Type": "application/json" });
     }
     PostService.prototype.Retrieve = function (skip, take) {
-        return this.http.get("Post/Retrieve?skip=" + skip + "&take=" + take, { headers: this.headers })
+        return this.http.get("Post/Retrieve?skip=" + skip + "&take=" + take, { headers: Ticket_1.GlobalTicket.Headers })
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };
     PostService.prototype.AddPost = function (post) {
-        return this.http.post("Post/Create", JSON.stringify({ Content: post }), { headers: this.headers })
+        return this.http.post("Post/Create", JSON.stringify({ Content: post }), { headers: Ticket_1.GlobalTicket.Headers })
             .map(function (res) { return res.json(); });
     };
     PostService.prototype.SearchPost = function (post) {
-        return this.http.get("Post/Search?term=" + post, { headers: this.headers })
+        return this.http.get("Post/Search?term=" + post, { headers: Ticket_1.GlobalTicket.Headers })
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };
     PostService.prototype.Delete = function (id) {
-        return this.http.post("Post/Delete", JSON.stringify({ ID: id }), { headers: this.headers })
+        return this.http.post("Post/Delete", JSON.stringify({ ID: id }), { headers: Ticket_1.GlobalTicket.Headers })
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };
     PostService.prototype.handleError = function (error) {

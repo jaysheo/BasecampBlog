@@ -77,6 +77,7 @@ namespace UCC.Wall.Logic
             List<DTO.Post>listPostDTO =  new List<DTO.Post>();
             foreach (var post in get)
             {
+                post.DateCreated = post.DateCreated.ToLocalTime();
                 listPostDTO.Add(mapDTO.Posts(post));
 
             }

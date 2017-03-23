@@ -2,6 +2,7 @@
 import { Http, Response, Headers } from "@angular/http";
 import { Observable } from "rxjs/Rx";
 import { UserModel } from "../Models/User";
+import { GlobalTicket } from "../Resources/Utility/Urls/Ticket";
 
 @Injectable()
 export class AccountService {
@@ -14,25 +15,29 @@ export class AccountService {
 
 
     public Login(account: UserModel): Observable<UserModel> {
-        return this.http.post("Account/Login", JSON.stringify(account), { headers: this.headers })
+        return this.http.post("Account/Login", JSON.stringify(account), { headers: GlobalTicket.Headers })
             .map((res: Response) => res.json());
     }
 
     public SignUp(account: UserModel): Observable<boolean> {
-        return this.http.post("Account/SignUp", JSON.stringify(account), { headers: this.headers })
+        return this.http.post("Account/SignUp", JSON.stringify(account), { headers: GlobalTicket.Headers })
             .map((res: Response) => res.json());
     }
 
     public CheckLoggedIn(): any{
-        return this.http.get("Account/CheckLoggedIn", { headers: this.headers })
+        return this.http.get("Account/CheckLoggedIn", { headers: GlobalTicket.Headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 
     public Logout(): any {
-        return this.http.get("Account/Logout", { headers: this.headers })
+        return this.http.get("Account/Logout", { headers: GlobalTicket.Headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 
+    public Init(): any {
+        return this.http.get("Home/Initialize", { headers: GlobalTicket.Headers })
+            .map((res: Response) => res.json()).catch(this.handleError);
+    }
   
 
 

@@ -7,6 +7,7 @@ using entity = UCC.Wall.Models.Entities;
 
 namespace UCC.Wall.Web.Controllers
 {
+  
     public class PostController : Controller
     {
         private readonly Logic.Post postLogic;
@@ -25,6 +26,7 @@ namespace UCC.Wall.Web.Controllers
         }
 
         // GET: Post
+        [Authorization]
         [HttpGet]
         public ActionResult Retrieve(int skip,int take)
         {

@@ -2,6 +2,7 @@
 import { Http, Response, Headers } from "@angular/http";
 import { Observable } from "rxjs/Rx";
 import { PostModel } from "../Models/Post";
+import { GlobalTicket } from "../Resources/Utility/Urls/Ticket";
 
 @Injectable()
 export class PostService {
@@ -13,24 +14,25 @@ export class PostService {
     }
 
 
-    public Retrieve(skip:number, take:number):any {
-        return this.http.get("Post/Retrieve?skip=" + skip +"&take=" + take, { headers: this.headers })
+    public Retrieve(skip: number, take: number): any {
+       
+        return this.http.get("Post/Retrieve?skip=" + skip +"&take=" + take, { headers: GlobalTicket.Headers})
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 
     public AddPost(post: any): Observable<boolean> {
     
-        return this.http.post("Post/Create", JSON.stringify({ Content: post}), { headers: this.headers })
+        return this.http.post("Post/Create", JSON.stringify({ Content: post }), { headers: GlobalTicket.Headers})
             .map((res: Response) => res.json())
     }
 
     public SearchPost(post: string): any {
-        return this.http.get("Post/Search?term=" + post,{ headers: this.headers })
+        return this.http.get("Post/Search?term=" + post, { headers: GlobalTicket.Headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 
     public Delete(id: string): any {
-        return this.http.post("Post/Delete", JSON.stringify({ ID: id}), { headers: this.headers })
+        return this.http.post("Post/Delete", JSON.stringify({ ID: id }), { headers: GlobalTicket.Headers })
             .map((res: Response) => res.json()).catch(this.handleError);
     }
 

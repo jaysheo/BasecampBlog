@@ -43,8 +43,13 @@ export class AccountComponent {
 
     ngOnInit(): any {
 
+        $(document).ready(function () {
+            $("time.timeago").timeago();
+        });
 
-        
+   //     $.timeago.settings.strings.inPast = "time has elapsed";
+       $.timeago.settings.allowPast = true;
+       
         this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
@@ -69,13 +74,8 @@ export class AccountComponent {
 
                 let postHandle: any[] = data.Posts;
                 this.listComments = data.Comments;
-
-              
                 this.statusRetrievePostResult = postHandle.length;
-                console.log(this.statusRetrievePostResult);
-
              
-
                 if (postHandle.length != 0) {
                     for (var i = 0; i < postHandle.length; i++) {
                         let getComments = this.listComments.filter(x => x.PostID == postHandle[i].ID);
@@ -129,11 +129,13 @@ export class AccountComponent {
 
                 CKEDITOR.instances['postdata'].setData('');
                 this.posts.unshift(data);
-                this.Modal("modal-addpost", false)
+                this.Modal("modal-addpost", false);
+                window.scrollTo(0,0);
             }, error => { console.log(error) });
 
         }
-       
+
+        CKEDITOR.instances['postdata'].setData('');
        
     }
 
@@ -152,10 +154,10 @@ export class AccountComponent {
            this.posts = postHandle;
            this.statusRetrievePost = false;
            this.statusRetrievePostResult = postHandle.length;
-           console.log("RAW DATA")
-           console.log(data);
-           console.log("Post Arranged");
-           console.log(this.posts);
+           //console.log("RAW DATA")
+           //console.log(data);
+           //console.log("Post Arranged");
+           //console.log(this.posts);
 
        }, error => { console.log(error); this.statusRetrievePost = false; });
     }
@@ -217,13 +219,6 @@ export class AccountComponent {
         if (commentContent != ""){
             this.commentService.AddComment(comment).subscribe(data => {
 
-          
-                $("input#commentInput").each(function () {
-                    $(this).val('');
-                })
-                      
-
-
                 for (var i in this.posts) {
                     if (this.posts[i].ID == data.PostID) {
                         this.posts[i].Comments.push(data);
@@ -235,7 +230,10 @@ export class AccountComponent {
 
             }, error => { console.log(error); this.postError = "Posting Failed. Please try Again." });
         }
-      
+
+        $("input#commentInput").each(function () {
+            $(this).val('');
+        })
 
     }
 
@@ -269,14 +267,19 @@ export class AccountComponent {
     }
 
 
-    ParseDate(date:string):any {
+    ParseDate(date:any):any {
 
         if (date != null) {
             var getDate = date.replace(/[^0-9\.]/g, '');
             var display = new Date(parseInt(getDate));
-
+            var offset = display.getTimezoneOffset();
+          
+            //return $.timeago((display.toUTCString()));   
+            //var sd = display.toUTCString();
+            //var sdd = display.setTime(display.getTime()-15);
+            return $.timeago(display);
             
-            return display.toDateString();
+           // return display.toDateString();
         }
 
        
@@ -289,6 +292,12 @@ export class AccountComponent {
         this.postService.Delete(id).subscribe(data => {
             this.RetrievePost(this.skip,this.take);
         },error=> console.log(error));
+    }
+
+    Ini() {
+        this.accountService.Init().subscribe(data => {
+            console.log(data);
+        }, error => console.log(error));
     }
 
 
@@ -322,6 +331,7 @@ export class AccountComponent {
         return sd;
 
     }
+
   
 
     Modal(modalName: string, toggle: boolean) {

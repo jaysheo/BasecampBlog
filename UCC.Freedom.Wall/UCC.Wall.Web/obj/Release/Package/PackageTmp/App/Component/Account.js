@@ -28,6 +28,11 @@ var AccountComponent = (function () {
     }
     AccountComponent.prototype.ngOnInit = function () {
         var _this = this;
+        $(document).ready(function () {
+            $("time.timeago").timeago();
+        });
+        //     $.timeago.settings.strings.inPast = "time has elapsed";
+        $.timeago.settings.allowPast = true;
         this.InitCKEDITOR();
         this.CheckLoggedIn();
         window.scrollTo(0, 0);
@@ -49,7 +54,6 @@ var AccountComponent = (function () {
                 var postHandle = data.Posts;
                 _this.listComments = data.Comments;
                 _this.statusRetrievePostResult = postHandle.length;
-                console.log(_this.statusRetrievePostResult);
                 if (postHandle.length != 0) {
                     for (var i = 0; i < postHandle.length; i++) {
                         var getComments = _this.listComments.filter(function (x) { return x.PostID == postHandle[i].ID; });
@@ -92,8 +96,10 @@ var AccountComponent = (function () {
                 CKEDITOR.instances['postdata'].setData('');
                 _this.posts.unshift(data);
                 _this.Modal("modal-addpost", false);
+                window.scrollTo(0, 0);
             }, function (error) { console.log(error); });
         }
+        CKEDITOR.instances['postdata'].setData('');
     };
     AccountComponent.prototype.RetrievePost = function (skip, take) {
         var _this = this;
@@ -108,10 +114,10 @@ var AccountComponent = (function () {
             _this.posts = postHandle;
             _this.statusRetrievePost = false;
             _this.statusRetrievePostResult = postHandle.length;
-            console.log("RAW DATA");
-            console.log(data);
-            console.log("Post Arranged");
-            console.log(_this.posts);
+            //console.log("RAW DATA")
+            //console.log(data);
+            //console.log("Post Arranged");
+            //console.log(this.posts);
         }, function (error) { console.log(error); _this.statusRetrievePost = false; });
     };
     AccountComponent.prototype.Login = function (form) {
@@ -150,9 +156,6 @@ var AccountComponent = (function () {
         var comment = new Comment_2.CommentModel(commentContent, postID);
         if (commentContent != "") {
             this.commentService.AddComment(comment).subscribe(function (data) {
-                $("input#commentInput").each(function () {
-                    $(this).val('');
-                });
                 for (var i in _this.posts) {
                     if (_this.posts[i].ID == data.PostID) {
                         _this.posts[i].Comments.push(data);
@@ -161,6 +164,9 @@ var AccountComponent = (function () {
                 }
             }, function (error) { console.log(error); _this.postError = "Posting Failed. Please try Again."; });
         }
+        $("input#commentInput").each(function () {
+            $(this).val('');
+        });
     };
     AccountComponent.prototype.CheckLoggedIn = function () {
         var _this = this;
@@ -188,7 +194,11 @@ var AccountComponent = (function () {
         if (date != null) {
             var getDate = date.replace(/[^0-9\.]/g, '');
             var display = new Date(parseInt(getDate));
-            return display.toDateString();
+            var offset = display.getTimezoneOffset();
+            //return $.timeago((display.toUTCString()));   
+            //var sd = display.toUTCString();
+            //var sdd = display.setTime(display.getTime()-15);
+            return $.timeago(display);
         }
     };
     AccountComponent.prototype.DeletePost = function (id) {
@@ -197,6 +207,11 @@ var AccountComponent = (function () {
         this.take = 2;
         this.postService.Delete(id).subscribe(function (data) {
             _this.RetrievePost(_this.skip, _this.take);
+        }, function (error) { return console.log(error); });
+    };
+    AccountComponent.prototype.Ini = function () {
+        this.accountService.Init().subscribe(function (data) {
+            console.log(data);
         }, function (error) { return console.log(error); });
     };
     AccountComponent.prototype.SearchChange = function (term) {

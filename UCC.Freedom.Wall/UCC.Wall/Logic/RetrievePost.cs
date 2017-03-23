@@ -39,9 +39,11 @@ namespace UCC.Wall.Logic
 
             foreach (Models.Entities.Comment comment in getCommentsPerID)
             {
-                
+
+                comment.DateCreated = comment.DateCreated.ToLocalTime();
                 commentPerID.Add(mapDTO.Comments(comment));      
             }
+
 
             return new DTO.RetrievePost
             {
@@ -51,6 +53,13 @@ namespace UCC.Wall.Logic
             };
             
         }
+
+        //public DateTime  ConvertTimeToLocal(DateTime time)
+        //{
+        //    DateTime localTime = DateTime.Parse(time);
+        //    var kind = localTime.Kind;
+        //    return localTime.ToLocalTime();    
+        //}
 
         
 

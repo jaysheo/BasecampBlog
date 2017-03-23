@@ -4,6 +4,10 @@
     width:100%;
     height:auto;
 }
+
+.post-comment input{
+    width:100%; margin-top:15px;
+}
 </style>
 
 
@@ -93,18 +97,14 @@
                                         </div>
                                       
                                     </div>
+
                                 </div>
+
                             </div>
 
-                            <div class="col-md-12" *ngIf="accountStatus != 'Account'">
-                             
-                                <!--<form (keyup.enter)="AddNewComment(commentData)" #commentData="ngForm">-->
-                                  
-                                    <input id="commentInput" title="Press enter" type="text" class="form-control" style="margin-top:20px;   display: inline-block; width:100%;" (keyup.enter)="AddNewComment(commentContent.value, post.ID, $event)" placeholder="Comment" required=""  #commentContent />
-                                   
+                            <div class="col-md-12 post-comment" *ngIf="accountStatus != 'Account'">
+                                    <input id="commentInput" title="Press enter" type="text" class="form-control" (keyup.enter)="AddNewComment(commentContent.value, post.ID, $event)" placeholder="Comment" required=""  #commentContent />
                                     <hr />
-
-                                <!--</form>-->
                             </div>
                            
                            
@@ -115,6 +115,8 @@
                 </div>
             </div>
         </div>
+        
+
     </div>
     
     <div class="text-center" style="z-index:1000; position:relative" *ngIf="statusRetrievePost != false">
@@ -193,7 +195,7 @@
     </div>
 </div>
 
-
+<!--Add post-->
 <div class="modal modal-fullscreen" id="modal-addpost" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -205,8 +207,11 @@
                 <div class="wrapper">
                     <!--<form #newPostData="ngForm" novalidate>-->
                         <h2 class="form-signin-heading">What's on your mind ?</h2>
-                        <br>
-                        <input type="text" class="form-control" placeholder="What's on your mind?" required="" id="postdata" />
+                    <small class="" style="margin:10px; padding:10px; background-color:mediumseagreen; color:beige; "><b>Note:</b> To attach a photo, you need to Copy the photo and Paste it on Text Editor. Photo must be online from Facebook,Google etc..</small>
+                     
+                    <br>
+                    <hr>
+                        <input type="text" style="margin-top:100px;"  class="form-control" placeholder="What's on your mind?" required="" id="postdata" />
                         <br />
                       
                         <button class="btn btn-lg btn-primary btn-block" (click)="AddNewPost()">Post</button>

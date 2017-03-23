@@ -11,13 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
 var Rx_1 = require("rxjs/Rx");
+var Ticket_1 = require("../Resources/Utility/Urls/Ticket");
 var CommentService = (function () {
     function CommentService(http) {
         this.http = http;
-        this.headers = new http_1.Headers({ "Content-Type": "application/json" });
     }
     CommentService.prototype.AddComment = function (post) {
-        return this.http.post("Comment/Create", JSON.stringify(post), { headers: this.headers })
+        return this.http.post("Comment/Create", JSON.stringify(post), { headers: Ticket_1.GlobalTicket.Headers })
             .map(function (res) { return res.json(); }).catch(this.handleError);
     };
     CommentService.prototype.handleError = function (error) {
