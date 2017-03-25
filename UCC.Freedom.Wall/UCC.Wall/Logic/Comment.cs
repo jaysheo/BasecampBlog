@@ -29,7 +29,8 @@ namespace UCC.Wall.Logic
         public DTO.Comment Create(DTO.Comment comment)
         {
             using (TransactionScope scope = new TransactionScope())
-            {
+            {   
+
                 comment.DateCreated = DateTime.UtcNow;
                 Models.Entities.Comment commentEntity = new Models.Entities.Comment
                 {
@@ -43,7 +44,9 @@ namespace UCC.Wall.Logic
                 post.ID = long.Parse(crypt.Decrypt(comment.PostID));
                 updatePostLogic.Upsert(post);
 
+            
                 DTO.Comment commentDTO = mapDTO.Comments(commentService.Create(commentEntity));
+                commentDTO.DateCreated = commentDTO.DateCreated.ToLocalTime();
                 scope.Complete();
                 return commentDTO;                                                             
 

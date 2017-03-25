@@ -15,7 +15,8 @@
     <script src="~/libs/reflect-metadata/Reflect.js"></script>
     <script src="~/libs/systemjs/dist/system.src.js"></script>
   
-  
+
+ 
    
     <!-- 2. Configure SystemJS -->
    
@@ -35,6 +36,8 @@
        
     </script>
 
+
+
 </head>
 <body>
   
@@ -44,6 +47,10 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/jquery.signalR-2.2.1.js"></script>
+    <script src="~/signalR/hubs" type="text/javascript"></script>
+
     <script>
         // .modal-backdrop classes
 
@@ -69,7 +76,60 @@
 
     </script>
   
+    <script>
 
+    var commentHub = $.connection.comment;
+    $.connection.hub.start();
+    commentHub.client.broadcastComment = function(comment) {
+       
+        
+        console.log(comment);
+        var newDate = new Date(comment.DateCreated).toLocaleString();
+        var finalDate = $.timeago(newDate);
+        console.log(newDate);
+        
+        var encodeName = $('<div/>').text(comment.UserName).html();
+        var encodeMessage = $('<div/>').text(comment.Content).html();
+        var encodeDate = $('<div/>').text(finalDate).html();
+
+        var appendID = "." + comment.PostID.replace(/[^\w\s]/gi, '');
+       
+        $(appendID).append(`
+              <li style="margin-left:-10px; list-style:none;">
+                                    <div class="row">
+                                        <div class="col-md-12 panelTop">
+                                            <a *ngIf="accountStatus == comment.UserName" title="Delete Comment" class="pull-right" style="z-index:10"><i style="color:#e0d2c3;" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
+                                            <div class="col-md-12" style="margin-bottom:10px;">
+                                                <h5 style="color:dimgray;"><b>` + encodeName +`</b> <span><small style="font-size:xx-small; color:darkgray;" class="glyphicon glyphicon-time"></small> `+ encodeDate+`</span></h5>
+                                                <p class="btn-info" style="display:inline-block; min-width:60px; padding:10px; border-radius:5px;">`+encodeMessage +`</p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </li>
+
+
+        `);
+
+        ////$('#messagesQuee').append('<li><b>' + encodeName + ':</b>' + encodeMessage + '</li>');
+
+
+        //for (var i in this.posts) {
+        //    if (this.posts[i].ID == comment.PostID) {
+        //            this.posts[i].Comments.push(comment);
+        //        break;
+        //    }
+
+        //}
+
+    };
+
+  
+
+    </script>
     <!--CK editor-->
     <script src="~/Content/library/ckeditor/ckeditor.js"></script>
     <script src="~/Scripts/timeago.js"></script>

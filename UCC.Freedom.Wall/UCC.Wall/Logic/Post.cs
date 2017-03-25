@@ -7,7 +7,7 @@ using System.Transactions;
 
 namespace UCC.Wall.Logic
 {
-    public class Post   : Component.Session.Config
+    public class Post: Component.Session.Config
     {
         private readonly Services.Post postService;
         private readonly Component.Cryptogphy.Crypt crypt;

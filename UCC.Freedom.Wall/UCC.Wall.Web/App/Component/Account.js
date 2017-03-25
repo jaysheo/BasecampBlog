@@ -156,17 +156,22 @@ var AccountComponent = (function () {
         var comment = new Comment_2.CommentModel(commentContent, postID);
         if (commentContent != "") {
             this.commentService.AddComment(comment).subscribe(function (data) {
-                for (var i in _this.posts) {
-                    if (_this.posts[i].ID == data.PostID) {
-                        _this.posts[i].Comments.push(data);
-                        break;
-                    }
-                }
+                _this.SendCommentHub(data);
+                //for (var i in this.posts) {
+                //    if (this.posts[i].ID == data.PostID) {
+                //        this.posts[i].Comments.push(data);
+                //        break;
+                //    }
+                //}
             }, function (error) { console.log(error); _this.postError = "Posting Failed. Please try Again."; });
         }
         $("input#commentInput").each(function () {
             $(this).val('');
         });
+    };
+    //PostId
+    AccountComponent.prototype.FilterID = function (value) {
+        return value.replace(/[^\w\s]/gi, '');
     };
     AccountComponent.prototype.CheckLoggedIn = function () {
         var _this = this;
@@ -234,6 +239,10 @@ var AccountComponent = (function () {
         var sd = value;
         $('.blogContent img').addClass('image-responsive');
         return sd;
+    };
+    AccountComponent.prototype.SendCommentHub = function (comment) {
+        var commentHub = $.connection.comment;
+        commentHub.server.send(comment);
     };
     AccountComponent.prototype.Modal = function (modalName, toggle) {
         var name = "#" + modalName;

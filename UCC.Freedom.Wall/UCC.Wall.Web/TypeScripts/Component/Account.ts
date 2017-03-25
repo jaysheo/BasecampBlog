@@ -64,6 +64,7 @@ export class AccountComponent {
 
             }
         });
+       
     }
 
 
@@ -216,16 +217,20 @@ export class AccountComponent {
     AddNewComment(commentContent:string, postID:string, event:any) {
         let comment = new CommentModel(commentContent, postID);
 
-        if (commentContent != ""){
+        if (commentContent != "") {
+           
             this.commentService.AddComment(comment).subscribe(data => {
 
-                for (var i in this.posts) {
-                    if (this.posts[i].ID == data.PostID) {
-                        this.posts[i].Comments.push(data);
-                        break;
-                    }
+                
+                this.SendCommentHub(data);
+              
+                //for (var i in this.posts) {
+                //    if (this.posts[i].ID == data.PostID) {
+                //        this.posts[i].Comments.push(data);
+                //        break;
+                //    }
 
-                }
+                //}
 
 
             }, error => { console.log(error); this.postError = "Posting Failed. Please try Again." });
@@ -236,7 +241,10 @@ export class AccountComponent {
         })
 
     }
-
+    //PostId
+    FilterID(value:string):string {
+       return value.replace(/[^\w\s]/gi, '');
+    }
   
 
     CheckLoggedIn() {
@@ -332,7 +340,13 @@ export class AccountComponent {
 
     }
 
-  
+    
+    SendCommentHub(comment:CommentModel) {
+        var commentHub = $.connection.comment;
+        commentHub.server.send(comment);
+       
+    }
+
 
     Modal(modalName: string, toggle: boolean) {
         let name: string = "#" + modalName;

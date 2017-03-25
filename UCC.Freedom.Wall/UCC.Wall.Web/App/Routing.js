@@ -12,11 +12,13 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 //import { DashboardComponent } from './Component/Dashboard';
 var Account_1 = require('./Component/Account');
+var Post_1 = require('./Component/Post');
 //import { AddProductComponent } from './Component/AddProduct';
 //import { Authorize } from './Security/Session/Authorize';
 var routes = [
     { path: '', pathMatch: 'full', redirectTo: 'home' },
     { path: 'home', component: Account_1.AccountComponent },
+    { path: 'post', component: Post_1.PostComponent },
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
@@ -33,6 +35,7 @@ var AppRoutingModule = (function () {
 exports.AppRoutingModule = AppRoutingModule;
 exports.routingComponents = [
     //DashboardComponent,
-    Account_1.AccountComponent
+    Account_1.AccountComponent,
+    Post_1.PostComponent
 ];
 //# sourceMappingURL=Routing.js.map
