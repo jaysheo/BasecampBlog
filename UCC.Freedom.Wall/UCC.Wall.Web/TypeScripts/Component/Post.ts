@@ -14,7 +14,7 @@ declare var CKEDITOR: any;
 
 @Component({
     selector: 'my-app',
-    templateUrl: './TypeScripts/Partials/Account.html',
+    templateUrl: './TypeScripts/Partials/Post.html',
     providers: [ CommentService]
 })
 export class PostComponent {

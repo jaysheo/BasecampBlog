@@ -486,6 +486,7 @@
     <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
     <Content Include="Scripts\timeago.js" />
     <Content Include="TypeScripts\Partials\Account.html" />
+    <Content Include="TypeScripts\Partials\Post.html" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -543,7 +544,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="TypeScripts\Partials\Account2.html" />
     <Content Include="TypeScripts\Partials\Home.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -559,6 +559,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -578,6 +579,7 @@
     <Folder Include="TypeScripts\Resources\Pipes\" />
     <Folder Include="Views\Account\" />
     <Folder Include="Views\Comment\" />
+    <Folder Include="Views\Notification\" />
     <Folder Include="Views\Post\" />
   </ItemGroup>
   <ItemGroup>
@@ -599,6 +601,7 @@
     <TypeScriptCompile Include="TypeScripts\Routing.ts" />
     <TypeScriptCompile Include="TypeScripts\Services\Account.ts" />
     <TypeScriptCompile Include="TypeScripts\Services\Comment.ts" />
+    <TypeScriptCompile Include="TypeScripts\Services\Notification.ts" />
     <TypeScriptCompile Include="TypeScripts\Services\Post.ts" />
   </ItemGroup>
   <ItemGroup>

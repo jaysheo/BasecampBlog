@@ -23,9 +23,10 @@ namespace UCC.Wall.Services
 
         }
 
-        public IEnumerable<Models.Entities.Post> Retrieve(int skip, int take)
+        public IQueryable<Models.Entities.Post> Retrieve(int skip, int take)
         {
-            return context.Posts.ToList().OrderByDescending(x => x.LastUpdatedDate).Skip(skip).Take(take);
+            return context.Posts.OrderByDescending(x => x.LastUpdatedDate).Skip(skip).Take(take);
+
         }
 
         public Models.Entities.Post GetByID(long id)

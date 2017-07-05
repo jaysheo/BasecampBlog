@@ -18,7 +18,7 @@ namespace UCC.Wall.Web.Controllers
         }
 
         // GET: Comment
-
+          [HttpPost]
         public ActionResult Create(dto.Comment comment)
         {
             var get = commentLogic.Create(comment);

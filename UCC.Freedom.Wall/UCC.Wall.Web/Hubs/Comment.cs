@@ -18,7 +18,7 @@ namespace UCC.Wall.Web.Hubs
             
         }
 
-        public void send(DTO.Comment comment)
+        public void send(DTO.Comment comment, string postUserID)
         {
 
             //var request = Context.Request.Cookies[crypt.Encrypt("UserID")].Value;
@@ -27,7 +27,7 @@ namespace UCC.Wall.Web.Hubs
 
             //string sd = string.Format("{0:F}", comment.DateCreated);
             // comment.DateCreated = DateTime.Parse(sd);   
-            Clients.All.broadcastComment(comment);
+            Clients.All.broadcastComment(comment,postUserID);
         }
 
       

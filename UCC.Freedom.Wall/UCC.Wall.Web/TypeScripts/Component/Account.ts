@@ -1,6 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { AccountService } from '../Services/Account';
 import { PostService } from '../Services/Post';
+import { NotificationService } from '../Services/Notification';
 import { CommentService } from '../Services/Comment';
 import { UserModel } from '../Models/User';
 import { CommentModel } from '../Models/Comment';
@@ -15,7 +16,7 @@ declare var CKEDITOR: any;
 @Component({
     selector: 'my-app',
     templateUrl: './TypeScripts/Partials/Account.html',
-    providers: [AccountService, PostService, CommentService]
+    providers: [AccountService, PostService, CommentService,NotificationService]
 })
 export class AccountComponent {
 
@@ -28,7 +29,8 @@ export class AccountComponent {
         private accountService: AccountService,
         private router: Router,
         private postService: PostService,
-        private commentService: CommentService) { }
+        private commentService: CommentService,
+        private notificationService: NotificationService) { }
 
     private loginMessage: string;
     private signUpMessage: string;
@@ -40,6 +42,10 @@ export class AccountComponent {
     private take: number = 2;
     private statusRetrievePost: boolean = true;
     private statusRetrievePostResult: number;
+    private notifications: any[];
+    private unseenNotificationsCount: any;
+
+    private pos;
 
     ngOnInit(): any {
 
@@ -64,6 +70,9 @@ export class AccountComponent {
 
             }
         });
+        this.RetrieveCommentHub();
+
+      
        
     }
 
@@ -100,7 +109,12 @@ export class AccountComponent {
     }
 
     InitCKEDITOR() {
-        CKEDITOR.replace('postdata', {
+        var id = 'postdata'
+        var instance = CKEDITOR.instances[id];
+        if (instance) {
+            CKEDITOR.remove(instance);
+        }
+        CKEDITOR.replace(id, {
             plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles',
             on: {
                 instanceReady: function () {
@@ -128,7 +142,7 @@ export class AccountComponent {
         if (form != "") {
             this.postService.AddPost(form).subscribe(data => {
 
-                CKEDITOR.instances['postdata'].setData('');
+              
                 this.posts.unshift(data);
                 this.Modal("modal-addpost", false);
                 window.scrollTo(0,0);
@@ -155,10 +169,11 @@ export class AccountComponent {
            this.posts = postHandle;
            this.statusRetrievePost = false;
            this.statusRetrievePostResult = postHandle.length;
-           //console.log("RAW DATA")
-           //console.log(data);
-           //console.log("Post Arranged");
-           //console.log(this.posts);
+           console.log("RAW DATA")
+           console.log(data);
+           console.log("Post Arranged");
+           console.log(this.posts);
+           this.pos = data;
 
        }, error => { console.log(error); this.statusRetrievePost = false; });
     }
@@ -173,6 +188,7 @@ export class AccountComponent {
             this.accountStatus = data.FirstName + " " + data.LastName;
             this.accountID = data.ID;
             this.Modal("modal-login", false);
+            this.RetrieveNotification(0,10);
             //console.log("accountID: " + this.accountID);
 
         }, error => {
@@ -180,6 +196,14 @@ export class AccountComponent {
             console.log(error);
         });
 
+    }
+
+
+    public LoadComment(post:CommentModel) {
+        this.commentService.AddComment(post).subscribe(data => {
+            console.log(data);
+
+        })
     }
 
 
@@ -214,15 +238,15 @@ export class AccountComponent {
 
     }
 
-    AddNewComment(commentContent:string, postID:string, event:any) {
+    AddNewComment(commentContent:string, postID:string, postUserID:string) {
         let comment = new CommentModel(commentContent, postID);
 
         if (commentContent != "") {
            
             this.commentService.AddComment(comment).subscribe(data => {
-
                 
-                this.SendCommentHub(data);
+                
+                this.SendCommentHub(data, postUserID);
               
                 //for (var i in this.posts) {
                 //    if (this.posts[i].ID == data.PostID) {
@@ -254,6 +278,7 @@ export class AccountComponent {
                 console.log(data);
                 this.accountStatus = data.UserName;
                 this.accountID = data.ID
+                this.RetrieveNotification(0,10);
                 ////console.log("accountID: " + this.accountID);
             } else {
                 this.accountID = null;
@@ -340,10 +365,16 @@ export class AccountComponent {
 
     }
 
-    
-    SendCommentHub(comment:CommentModel) {
+    RetrieveCommentHub() {
         var commentHub = $.connection.comment;
-        commentHub.server.send(comment);
+        $.connection.hub.start();
+        commentHub.client.broadcastComment = ((comment, postUserID) => {
+            this.unseenNotificationsCount++;
+        });
+    }
+    SendCommentHub(comment:CommentModel,postUserID) {
+        var commentHub = $.connection.comment;
+        commentHub.server.send(comment,postUserID);
        
     }
 
@@ -358,6 +389,20 @@ export class AccountComponent {
 
         }
        
+    }
+
+    RetrieveNotification(skip:number, take:number) {
+
+        this.notificationService.Retrieve(skip, take).subscribe(data => {
+            this.notifications = data;
+            this.unseenNotificationsCount = data[0].UnseenCount;
+        }, error => console.log(error));
+    }
+
+    SeenNotificaton() {
+        this.notificationService.Seen().subscribe(data => {
+            this.unseenNotificationsCount = 0;
+        }, error => console.log(error));
     }
    
 }

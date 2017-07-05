@@ -17,6 +17,8 @@ namespace UCC.Wall.Models.Entities
 
         public string UserName { get; set; }
 
+        public long UserID { get; set; }
+
         [ForeignKey("Post")]
         public long PostID { get; set; }
         public Post Post { get; set; }

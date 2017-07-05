@@ -48,6 +48,23 @@ namespace UCC.Wall.Extension
             };
         }
 
+        public DTO.Notification Notification(Models.Entities.Notification notif)
+        {
+            return new DTO.Notification
+            {
+                ID = crypt.Encrypt(notif.ID.ToString()),
+                Action = notif.Action,
+                DateCreated = notif.DateCreated,
+                isSeen = notif.isSeen,
+                LastUpdatedDate = notif.LastUpdatedDate,
+                PostID = crypt.Encrypt(notif.PostID.ToString()),   
+                UserID = crypt.Encrypt(notif.UserID.ToString())
+               
+
+            };
+
+        }
+
         public DTO.Comment Comments(Models.Entities.Comment comment)
         {     
             return new DTO.Comment
@@ -56,6 +73,7 @@ namespace UCC.Wall.Extension
                 Content = comment.Content,
                 DateCreated = comment.DateCreated,
                 UserName = comment.UserName,
+                UserID = crypt.Encrypt(comment.UserID.ToString()),
                 PostID = crypt.Encrypt(comment.PostID.ToString()),
                 Replies = new List<DTO.Reply>()
             };

@@ -40,11 +40,11 @@ var AccountService = (function () {
     AccountService.prototype.handleError = function (error) {
         return Rx_1.Observable.throw(error);
     };
-    AccountService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], AccountService);
     return AccountService;
 }());
+AccountService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], AccountService);
 exports.AccountService = AccountService;
 //# sourceMappingURL=Account.js.map

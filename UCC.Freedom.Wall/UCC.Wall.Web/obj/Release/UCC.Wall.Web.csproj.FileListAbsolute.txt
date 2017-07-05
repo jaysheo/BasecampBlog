@@ -88,3 +88,14 @@ C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\System.W
 C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\obj\Release\UCC.Wall.Web.csprojResolveAssemblyReference.cache
 C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\obj\Release\UCC.Wall.Web.dll
 C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\obj\Release\UCC.Wall.Web.pdb
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.Owin.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.Owin.Security.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Owin.dll
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.Owin.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\jaymo\Documents\BasecampBlog\UCC.Freedom.Wall\UCC.Wall.Web\bin\Microsoft.Owin.Security.xml

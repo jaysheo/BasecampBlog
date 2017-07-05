@@ -36,11 +36,11 @@ var PostService = (function () {
     PostService.prototype.handleError = function (error) {
         return Rx_1.Observable.throw(error);
     };
-    PostService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], PostService);
     return PostService;
 }());
+PostService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], PostService);
 exports.PostService = PostService;
 //# sourceMappingURL=Post.js.map

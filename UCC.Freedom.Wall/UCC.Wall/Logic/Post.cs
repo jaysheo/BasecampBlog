@@ -73,15 +73,27 @@ namespace UCC.Wall.Logic
 
         public List<DTO.Post> Retrieve(int skip,int take) {
 
-            var get = postService.Retrieve(skip,take);
-            List<DTO.Post>listPostDTO =  new List<DTO.Post>();
-            foreach (var post in get)
+            var get = postService.Retrieve(skip, take).Select(post => new DTO.Post
             {
-                post.DateCreated = post.DateCreated.ToLocalTime();
-                listPostDTO.Add(mapDTO.Posts(post));
+                ID = post.ID.ToString(),
+                Content = post.Content,
+                DateCreated = post.DateCreated,
+                UserName = post.UserName,
+                UserID = post.UserID.ToString(),
+                LastUpdatedDate = post.LastUpdatedDate
 
-            }
-            return listPostDTO;
+            }).ToList();
+
+            var commet = postService.Retrieve(skip,take).Select(x => x.Comments).ToList();
+          
+            //List<DTO.Post>listPostDTO =  new List<DTO.Post>();
+            //foreach (var post in get)
+            //{
+            //    post.DateCreated = post.DateCreated.ToLocalTime();
+            //    listPostDTO.Add(mapDTO.Posts(post));
+
+            //}
+            return get;
           
 
         }

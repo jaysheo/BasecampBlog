@@ -19,13 +19,19 @@ namespace UCC.Wall.Web
                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
            );
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller="Home",action = "Index", id = UrlParameter.Optional }
-            );
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller="Home",action = "Index", id = UrlParameter.Optional }
+            //);
 
-           
+            //// Route override to work with Angularjs and HTML5 routing
+            //context.MapRoute(
+            //    name: "Application1Override",
+            //    url: "Application1/{*.}",
+            //    defaults: new { controller = "Application1", action = "Index" }
+            //);
+
         }
     }
 }

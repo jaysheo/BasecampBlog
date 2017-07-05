@@ -25,5 +25,7 @@ namespace UCC.Wall.Models.Entities
                 
         public virtual List<Comment> Comments { get; set; }
 
+        public virtual List<Notification> Notifications { get; set; }
+
     }
 }

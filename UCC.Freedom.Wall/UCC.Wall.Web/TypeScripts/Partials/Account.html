@@ -24,16 +24,14 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav navbar-right">
-                <!--<li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i> Notification <span class="badge">0</span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#"><i class="fa fa-fw fa-tag"></i> <span class="badge">Notification</span> sayfası <span class="badge">Video</span> sayfasında etiketlendi</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-thumbs-o-up"></i> <span class="badge">Music</span> sayfasında iletiniz beğenildi</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-thumbs-o-up"></i> <span class="badge">Video</span> sayfasında iletiniz beğenildi</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-thumbs-o-up"></i> <span class="badge">Game</span> sayfasında iletiniz beğenildi</a></li>
+                <li class="dropdown" *ngIf="accountStatus != 'Account'">
+                    <a href="#" (click)="SeenNotificaton()" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i> Notification <span *ngIf="unseenNotificationsCount != 0" id="{{'notif-' + FilterID(accountID)}}" class="badge">{{unseenNotificationsCount}}</span></a>
+                    <ul class="dropdown-menu" role="menu" style="min-height:200px; box-shadow:5px 5px 5px gray">
+                        <li style="padding:10px;" *ngFor="let notif of notifications"><a href="#"><i class="fa fa-fw fa-tag"></i> <span class="label label-info" style="text-transform:capitalize;">{{notif.UserName}}</span> {{notif.Action}} <span>{{ParseDate(notif.DateCreated)}}</span></a> </li>
+                       
                     </ul>
                 </li>
-                <li class="active"><a href="#">Messages <span class="sr-only">(current)</span></a></li>-->
+                <!--<li class="active"><a href="#">Messages <span class="sr-only">(current)</span></a></li>-->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{accountStatus}}<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -73,19 +71,18 @@
                             <div class="row" *ngIf="accountID == post.UserID">
                                  <div class="col-md-12">
                                      <a class="pull-right" style="z-index:10" (click)="DeletePost(post.ID)" title="Delete"><i style="color:darkgrey;" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
-
-
+                                    
                                  </div>
                                 
                             </div>
                            <div class="col-md-12">
-                               <!--<span class="label label-primary pull-right"><a style="color:white" [routerLink]="['/post']">Message</a></span>--> 
+                               <span class="label label-primary pull-right"><a style="color:white" [routerLink]="['/post']">Message</a></span> 
                                <h4 style="text-transform:capitalize;">{{post.UserName}}</h4>
                                
                                 <h6><small class="glyphicon glyphicon-time" style="color:darkgray;"></small> {{ParseDate(post.DateCreated)}}</h6>
                                 <hr/>
                               
-                                   <div class="blogContent" [innerHTML]="ParseDOM(post.Content)"></div>
+                                   <div class="blogContent"  (click)="LoadComment(post)" [innerHTML]="ParseDOM(post.Content)"></div>
                             </div>
                         </div>
                     </div>
@@ -100,7 +97,7 @@
                                         <div class="col-md-12 panelTop">
                                             <a *ngIf="accountStatus == comment.UserName" title="Delete Comment" class="pull-right" style="z-index:10"><i style="color:#e0d2c3;" class="glyphicon glyphicon-remove icon-arrow-right pull-right"></i></a>
                                             <div class="col-md-12" style="margin-bottom:10px;">
-                                                <h5 style="color:dimgray; text-transform:capitalize;"><b>{{comment.UserName}}</b> <span><small style="font-size:xx-small; color:darkgray;" class="glyphicon glyphicon-time"></small> {{ParseDate(comment.DateCreated)}}</span></h5>
+                                                <h5 style="color:dimgray;"><b style="text-transform:capitalize;">{{comment.UserName}}</b> <span><small style="font-size:xx-small; color:darkgray;" class="glyphicon glyphicon-time"></small> {{ParseDate(comment.DateCreated)}}</span></h5>
                                                 <p class="btn-info" style="display:inline-block; padding:10px; border-radius:5px;">{{comment.Content}}</p>
                                                 <!--<h6><small class="glyphicon glyphicon-time" style="color:darkgray;"></small> {{ParseDate(comment.DateCreated)}}</h6>-->
 
@@ -117,7 +114,7 @@
                            
 
                             <div class="col-md-12 post-comment" *ngIf="accountStatus != 'Account'">
-                                    <input id="commentInput" title="Press enter" type="text" class="form-control" (keyup.enter)="AddNewComment(commentContent.value, post.ID, $event)" placeholder="Comment" required=""  #commentContent />
+                                    <input id="commentInput" title="Press enter" type="text" class="form-control" (keyup.enter)="AddNewComment(commentContent.value, post.ID, post.UserID)" placeholder="Comment" required=""  #commentContent />
                                     <hr />
                             </div>
                            
@@ -145,7 +142,7 @@
 <!--Modals-->
 
 <!-- Modal login -->
-<div class="modal modal-fullscreen" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade modal-fullscreen" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -154,7 +151,7 @@
             </div>
             <div class="modal-body">
                 <div class="wrapper">
-                    <form (ngSubmit)="Login(loginData)" #loginData="ngForm" class="form-signin">
+                    <form (ngSubmit)="Login(loginData)" #loginData="ngForm" class="form-signin" >
                         <h2 class="form-signin-heading">Please login</h2>
                         <input type="text" class="form-control" ngModel name="Email" placeholder="Email Address" required="" autofocus="" />
                         <br />

@@ -8,19 +8,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var Account_1 = require('../Services/Account');
-var Post_1 = require('../Services/Post');
-var Comment_1 = require('../Services/Comment');
-var Comment_2 = require('../Models/Comment');
-var router_1 = require('@angular/router');
-require('rxjs/add/operator/map');
+var core_1 = require("@angular/core");
+var Account_1 = require("../Services/Account");
+var Post_1 = require("../Services/Post");
+var Notification_1 = require("../Services/Notification");
+var Comment_1 = require("../Services/Comment");
+var Comment_2 = require("../Models/Comment");
+var router_1 = require("@angular/router");
+require("rxjs/add/operator/map");
 var AccountComponent = (function () {
-    function AccountComponent(accountService, router, postService, commentService) {
+    function AccountComponent(accountService, router, postService, commentService, notificationService) {
         this.accountService = accountService;
         this.router = router;
         this.postService = postService;
         this.commentService = commentService;
+        this.notificationService = notificationService;
         this.accountStatus = 'Account';
         this.skip = 0;
         this.take = 2;
@@ -45,6 +47,7 @@ var AccountComponent = (function () {
                 _this.AddPostOnScrollDown(_this.skip, _this.take);
             }
         });
+        this.RetrieveCommentHub();
     };
     AccountComponent.prototype.AddPostOnScrollDown = function (skip, take) {
         var _this = this;
@@ -71,7 +74,12 @@ var AccountComponent = (function () {
         }
     };
     AccountComponent.prototype.InitCKEDITOR = function () {
-        CKEDITOR.replace('postdata', {
+        var id = 'postdata';
+        var instance = CKEDITOR.instances[id];
+        if (instance) {
+            CKEDITOR.remove(instance);
+        }
+        CKEDITOR.replace(id, {
             plugins: 'wysiwygarea,toolbar,sourcearea,image,basicstyles',
             on: {
                 instanceReady: function () {
@@ -93,7 +101,6 @@ var AccountComponent = (function () {
         console.log(form);
         if (form != "") {
             this.postService.AddPost(form).subscribe(function (data) {
-                CKEDITOR.instances['postdata'].setData('');
                 _this.posts.unshift(data);
                 _this.Modal("modal-addpost", false);
                 window.scrollTo(0, 0);
@@ -114,10 +121,11 @@ var AccountComponent = (function () {
             _this.posts = postHandle;
             _this.statusRetrievePost = false;
             _this.statusRetrievePostResult = postHandle.length;
-            //console.log("RAW DATA")
-            //console.log(data);
-            //console.log("Post Arranged");
-            //console.log(this.posts);
+            console.log("RAW DATA");
+            console.log(data);
+            console.log("Post Arranged");
+            console.log(_this.posts);
+            _this.pos = data;
         }, function (error) { console.log(error); _this.statusRetrievePost = false; });
     };
     AccountComponent.prototype.Login = function (form) {
@@ -127,10 +135,16 @@ var AccountComponent = (function () {
             _this.accountStatus = data.FirstName + " " + data.LastName;
             _this.accountID = data.ID;
             _this.Modal("modal-login", false);
+            _this.RetrieveNotification(0, 10);
             //console.log("accountID: " + this.accountID);
         }, function (error) {
             _this.loginMessage = "Email or Password is Invalid. Please try again.";
             console.log(error);
+        });
+    };
+    AccountComponent.prototype.LoadComment = function (post) {
+        this.commentService.AddComment(post).subscribe(function (data) {
+            console.log(data);
         });
     };
     AccountComponent.prototype.SignUp = function (form) {
@@ -151,12 +165,12 @@ var AccountComponent = (function () {
             });
         }
     };
-    AccountComponent.prototype.AddNewComment = function (commentContent, postID, event) {
+    AccountComponent.prototype.AddNewComment = function (commentContent, postID, postUserID) {
         var _this = this;
         var comment = new Comment_2.CommentModel(commentContent, postID);
         if (commentContent != "") {
             this.commentService.AddComment(comment).subscribe(function (data) {
-                _this.SendCommentHub(data);
+                _this.SendCommentHub(data, postUserID);
                 //for (var i in this.posts) {
                 //    if (this.posts[i].ID == data.PostID) {
                 //        this.posts[i].Comments.push(data);
@@ -180,6 +194,7 @@ var AccountComponent = (function () {
                 console.log(data);
                 _this.accountStatus = data.UserName;
                 _this.accountID = data.ID;
+                _this.RetrieveNotification(0, 10);
             }
             else {
                 _this.accountID = null;
@@ -240,9 +255,17 @@ var AccountComponent = (function () {
         $('.blogContent img').addClass('image-responsive');
         return sd;
     };
-    AccountComponent.prototype.SendCommentHub = function (comment) {
+    AccountComponent.prototype.RetrieveCommentHub = function () {
+        var _this = this;
         var commentHub = $.connection.comment;
-        commentHub.server.send(comment);
+        $.connection.hub.start();
+        commentHub.client.broadcastComment = (function (comment, postUserID) {
+            _this.unseenNotificationsCount++;
+        });
+    };
+    AccountComponent.prototype.SendCommentHub = function (comment, postUserID) {
+        var commentHub = $.connection.comment;
+        commentHub.server.send(comment, postUserID);
     };
     AccountComponent.prototype.Modal = function (modalName, toggle) {
         var name = "#" + modalName;
@@ -253,15 +276,32 @@ var AccountComponent = (function () {
             $(name).modal("show");
         }
     };
-    AccountComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            templateUrl: './TypeScripts/Partials/Account.html',
-            providers: [Account_1.AccountService, Post_1.PostService, Comment_1.CommentService]
-        }), 
-        __metadata('design:paramtypes', [Account_1.AccountService, router_1.Router, Post_1.PostService, Comment_1.CommentService])
-    ], AccountComponent);
+    AccountComponent.prototype.RetrieveNotification = function (skip, take) {
+        var _this = this;
+        this.notificationService.Retrieve(skip, take).subscribe(function (data) {
+            _this.notifications = data;
+            _this.unseenNotificationsCount = data[0].UnseenCount;
+        }, function (error) { return console.log(error); });
+    };
+    AccountComponent.prototype.SeenNotificaton = function () {
+        var _this = this;
+        this.notificationService.Seen().subscribe(function (data) {
+            _this.unseenNotificationsCount = 0;
+        }, function (error) { return console.log(error); });
+    };
     return AccountComponent;
 }());
+AccountComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        templateUrl: './TypeScripts/Partials/Account.html',
+        providers: [Account_1.AccountService, Post_1.PostService, Comment_1.CommentService, Notification_1.NotificationService]
+    }),
+    __metadata("design:paramtypes", [Account_1.AccountService,
+        router_1.Router,
+        Post_1.PostService,
+        Comment_1.CommentService,
+        Notification_1.NotificationService])
+], AccountComponent);
 exports.AccountComponent = AccountComponent;
 //# sourceMappingURL=Account.js.map

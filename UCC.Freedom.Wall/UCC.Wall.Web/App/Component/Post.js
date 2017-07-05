@@ -8,21 +8,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var Comment_1 = require('../Services/Comment');
-require('rxjs/add/operator/map');
+var core_1 = require("@angular/core");
+var Comment_1 = require("../Services/Comment");
+require("rxjs/add/operator/map");
 var PostComponent = (function () {
     function PostComponent() {
     }
-    PostComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            templateUrl: './TypeScripts/Partials/Account.html',
-            providers: [Comment_1.CommentService]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], PostComponent);
     return PostComponent;
 }());
+PostComponent = __decorate([
+    core_1.Component({
+        selector: 'my-app',
+        templateUrl: './TypeScripts/Partials/Post.html',
+        providers: [Comment_1.CommentService]
+    }),
+    __metadata("design:paramtypes", [])
+], PostComponent);
 exports.PostComponent = PostComponent;
 //# sourceMappingURL=Post.js.map

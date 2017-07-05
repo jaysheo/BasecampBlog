@@ -24,5 +24,7 @@ namespace UCC.Wall.Models.Context
 
         public DbSet<Reply> Replies { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
     }
 }

@@ -21,6 +21,7 @@ namespace UCC.Wall.DTO
             DateCreated = DateCreated;
             UserName = comment.UserName;
             PostID = comment.PostID.ToString();
+            UserID = comment.UserID.ToString();
             this.Replies = new List<Reply>();
             
         }
@@ -37,7 +38,9 @@ namespace UCC.Wall.DTO
 
         public string PostID { get; set; }
 
-      
+        public string UserID { get; set; }
+
+
 
 
 

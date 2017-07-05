@@ -15,6 +15,7 @@ namespace UCC.Wall.Logic
         private readonly Reply replyLogic;
         private readonly Extension.MapToDTO mapDTO;
         private readonly UpdatePost updatePostLogic;
+        private readonly Notification notificationLogic;
 
         public Comment()
         {
@@ -24,20 +25,21 @@ namespace UCC.Wall.Logic
             replyLogic = new Reply();
             mapDTO = new Extension.MapToDTO();
             updatePostLogic = new UpdatePost();
+            notificationLogic = new Notification();
         }
 
         public DTO.Comment Create(DTO.Comment comment)
         {
             using (TransactionScope scope = new TransactionScope())
-            {   
-
+            {          
                 comment.DateCreated = DateTime.UtcNow;
                 Models.Entities.Comment commentEntity = new Models.Entities.Comment
                 {
                     Content = comment.Content,
                     DateCreated = DateTime.UtcNow,
                     PostID = long.Parse(crypt.Decrypt(comment.PostID)),
-                    UserName = UserValues().UserName
+                    UserName = UserValues().UserName,
+                    UserID = long.Parse(crypt.Decrypt(UserValues().ID))
                 };
 
                 Models.Entities.Post post = new Models.Entities.Post();
@@ -47,6 +49,16 @@ namespace UCC.Wall.Logic
             
                 DTO.Comment commentDTO = mapDTO.Comments(commentService.Create(commentEntity));
                 commentDTO.DateCreated = commentDTO.DateCreated.ToLocalTime();
+            
+               Models.Entities.Notification notifEntity = new Models.Entities.Notification
+                {
+                    PostID = commentEntity.PostID,
+                    UserID = commentEntity.UserID,
+                    Action = "commented on your post"
+                };
+
+                DTO.Notification getDTO = notificationLogic.Create(notifEntity);
+
                 scope.Complete();
                 return commentDTO;                                                             
 

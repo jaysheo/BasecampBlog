@@ -14,7 +14,7 @@
     <script src="~/libs/zone.js/dist/zone.js"></script>
     <script src="~/libs/reflect-metadata/Reflect.js"></script>
     <script src="~/libs/systemjs/dist/system.src.js"></script>
-  
+    <base href="/" />
 
  
    
@@ -80,20 +80,23 @@
 
     var commentHub = $.connection.comment;
     $.connection.hub.start();
-    commentHub.client.broadcastComment = function(comment) {
+    commentHub.client.broadcastComment = function(comment, postUserID) {
        
         
         console.log(comment);
         var newDate = new Date(comment.DateCreated).toLocaleString();
         var finalDate = $.timeago(newDate);
-        console.log(newDate);
+       
         
         var encodeName = $('<div/>').text(comment.UserName).html();
         var encodeMessage = $('<div/>').text(comment.Content).html();
         var encodeDate = $('<div/>').text(finalDate).html();
 
         var appendID = "." + comment.PostID.replace(/[^\w\s]/gi, '');
-       
+        var appendNotifID = "#notif-" + postUserID.replace(/[^\w\s]/gi, '');
+        console.log(appendNotifID);
+        $(appendNotifID).html(parseInt($(appendNotifID).html()) + 1);
+
         $(appendID).append(`
               <li style="margin-left:-10px; list-style:none;">
                                     <div class="row">

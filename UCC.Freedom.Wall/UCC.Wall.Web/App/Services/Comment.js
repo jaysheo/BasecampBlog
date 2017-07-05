@@ -23,11 +23,11 @@ var CommentService = (function () {
     CommentService.prototype.handleError = function (error) {
         return Rx_1.Observable.throw(error);
     };
-    CommentService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], CommentService);
     return CommentService;
 }());
+CommentService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], CommentService);
 exports.CommentService = CommentService;
 //# sourceMappingURL=Comment.js.map
